@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description = 'Il blog personale di Cesare Scalise', image } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title} — Cesare Scalise</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    {image && <meta property="og:image" content={image} />}
+    <meta property="og:title" content={`${title} — Cesare Scalise`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+
+    <!-- GLightbox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+  </head>
+  <body class="bg-white text-gray-900 antialiased">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
+      <nav class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="/" class="text-xl font-bold tracking-tight hover:text-blue-600 transition-colors">
+          Cesare Scalise
+        </a>
+        <ul class="flex gap-6 text-sm font-medium text-gray-600">
+          <li><a href="/blog" class="hover:text-blue-600 transition-colors">Blog</a></li>
+          <li><a href="/gallerie" class="hover:text-blue-600 transition-colors">Gallerie</a></li>
+          <li><a href="/cv" class="hover:text-blue-600 transition-colors">CV</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-10 min-h-[calc(100vh-130px)]">
+      <slot />
+    </main>
+
+    <footer class="border-t border-gray-100 mt-16">
+      <div class="max-w-5xl mx-auto px-4 py-8 text-center text-sm text-gray-400">
+        © {new Date().getFullYear()} Cesare Scalise · Tutti i diritti riservati
+      </div>
+    </footer>
+
+  </body>
+</html>

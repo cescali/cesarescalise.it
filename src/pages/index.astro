@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import GalleryCard from '../components/GalleryCard.astro';
+import { getPosts, getGalleries } from '../lib/wordpress';
+
+const [posts, galleries] = await Promise.all([
+  getPosts(4),
+  getGalleries(),
+]);
+
+const latestGalleries = galleries.slice(0, 3);
+---
+
+<BaseLayout title="Home">
+
+  <!-- Hero -->
+  <section class="py-16 text-center border-b border-gray-100 mb-12">
+    <h1 class="text-4xl sm:text-5xl font-bold mb-4">Ciao, sono <span class="text-blue-600">Cesare Scalise</span></h1>
+    <p class="text-lg text-gray-500 max-w-xl mx-auto mb-8">
+      Scrivo del mio lavoro, delle mie passioni e condivido foto dei miei viaggi e avventure.
+    </p>
+    <div class="flex gap-4 justify-center">
+      <a href="/blog" class="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
+        Leggi il blog
+      </a>
+      <a href="/cv" class="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:border-blue-600 hover:text-blue-600 transition-colors">
+        Il mio CV
+      </a>
+    </div>
+  </section>
+
+  <!-- Ultimi articoli -->
+  <section class="mb-14">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold">Ultimi articoli</h2>
+      <a href="/blog" class="text-sm text-blue-600 hover:underline">Tutti gli articoli</a>
+    </div>
+    {posts.length === 0 ? (
+      <p class="text-gray-400">Nessun articolo trovato.</p>
+    ) : (
+      <div>
+        {posts.map(post => <PostCard post={post} />)}
+      </div>
+    )}
+  </section>
+
+  <!-- Gallerie -->
+  {latestGalleries.length > 0 && (
+    <section>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold">Gallerie foto</h2>
+        <a href="/gallerie" class="text-sm text-blue-600 hover:underline">Tutte le gallerie</a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {latestGalleries.map(g => <GalleryCard gallery={g} />)}
+      </div>
+    </section>
+  )}
+
+</BaseLayout>

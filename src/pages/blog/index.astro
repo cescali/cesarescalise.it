@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPosts, getTotalPostPages } from '../../lib/wordpress';
+
+const page = parseInt(Astro.url.searchParams.get('page') ?? '1', 10);
+const perPage = 8;
+const [posts, totalPages] = await Promise.all([
+  getPosts(perPage, page),
+  getTotalPostPages(perPage),
+]);
+---
+
+<BaseLayout title="Blog">
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">Blog</h1>
+    <p class="text-gray-500">Articoli su lavoro, vita e passioni.</p>
+  </div>
+
+  {posts.length === 0 ? (
+    <p class="text-gray-400">Nessun articolo disponibile.</p>
+  ) : (
+    <div>
+      {posts.map(post => <PostCard post={post} />)}
+    </div>
+  )}
+
+  <!-- Paginazione -->
+  {totalPages > 1 && (
+    <nav class="flex justify-center gap-2 mt-10">
+      {page > 1 && (
+        <a href={`/blog?page=${page - 1}`}
+           class="px-4 py-2 rounded-lg border border-gray-200 text-sm hover:border-blue-600 hover:text-blue-600 transition-colors">
+          ← Precedente
+        </a>
+      )}
+      <span class="px-4 py-2 text-sm text-gray-400">
+        Pagina {page} di {totalPages}
+      </span>
+      {page < totalPages && (
+        <a href={`/blog?page=${page + 1}`}
+           class="px-4 py-2 rounded-lg border border-gray-200 text-sm hover:border-blue-600 hover:text-blue-600 transition-colors">
+          Successiva →
+        </a>
+      )}
+    </nav>
+  )}
+
+</BaseLayout>

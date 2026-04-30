@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold leading-tight;
+  }
+
+  /* WordPress post content styling */
+  .wp-content {
+    @apply prose prose-gray max-w-none;
+  }
+
+  .wp-content p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  .wp-content img {
+    @apply rounded-lg shadow-sm my-6;
+  }
+
+  .wp-content h2 {
+    @apply text-2xl mt-8 mb-4;
+  }
+
+  .wp-content h3 {
+    @apply text-xl mt-6 mb-3;
+  }
+
+  .wp-content a {
+    @apply text-blue-600 hover:underline;
+  }
+
+  .wp-content blockquote {
+    @apply border-l-4 border-blue-200 pl-4 italic text-gray-600 my-6;
+  }
+}

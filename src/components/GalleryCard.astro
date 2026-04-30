@@ -1,0 +1,30 @@
+---
+import type { Gallery } from '../lib/wordpress';
+
+interface Props {
+  gallery: Gallery;
+}
+const { gallery } = Astro.props;
+
+const WP_BASE = import.meta.env.PUBLIC_WP_URL ?? 'https://www.cesarescalise.it/wordpress';
+const coverUrl = gallery.cover_url || `${WP_BASE}/wp-content/uploads/gallery-placeholder.jpg`;
+---
+
+<a
+  href={`/gallerie/${gallery.id}`}
+  class="group block rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+>
+  <div class="relative aspect-video overflow-hidden bg-gray-100">
+    <img
+      src={coverUrl}
+      alt={gallery.name}
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      loading="lazy"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+    <div class="absolute bottom-0 left-0 right-0 p-4">
+      <h3 class="text-white font-semibold text-lg leading-tight">{gallery.name}</h3>
+      <p class="text-white/70 text-sm mt-0.5">{gallery.pic_count} foto</p>
+    </div>
+  </div>
+</a>

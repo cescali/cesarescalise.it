@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getGallery, getGalleryPics } from '../../lib/wordpress';
+
+const { id } = Astro.params;
+const galleryId = parseInt(id!, 10);
+
+const [gallery, pics] = await Promise.all([
+  getGallery(galleryId),
+  getGalleryPics(galleryId),
+]);
+
+if (!gallery) {
+  return Astro.redirect('/gallerie');
+}
+---
+
+<BaseLayout title={gallery.name} description={gallery.description || `Galleria: ${gallery.name}`}>
+
+  <!-- Back -->
+  <a href="/gallerie" class="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-blue-600 transition-colors mb-8">
+    ← Tutte le gallerie
+  </a>
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">{gallery.name}</h1>
+    {gallery.description && (
+      <p class="text-gray-500">{gallery.description}</p>
+    )}
+    <p class="text-sm text-gray-400 mt-1">{pics.length} foto</p>
+  </div>
+
+  {pics.length === 0 ? (
+    <p class="text-gray-400">Nessuna foto in questa galleria.</p>
+  ) : (
+    <!-- Masonry grid con CSS columns -->
+    <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4" id="masonry-gallery">
+      {pics.map((pic, i) => (
+        <div class="break-inside-avoid">
+          <a
+            href={pic.url}
+            class="glightbox block rounded-lg overflow-hidden hover:opacity-90 transition-opacity"
+            data-gallery="gallery-main"
+            data-description={pic.description || pic.alttext}
+            data-title={pic.alttext || gallery.name}
+          >
+            <img
+              src={pic.thumb_url}
+              alt={pic.alttext || `Foto ${i + 1}`}
+              class="w-full object-cover"
+              loading="lazy"
+            />
+          </a>
+        </div>
+      ))}
+    </div>
+  )}
+
+</BaseLayout>
+
+<!-- GLightbox init -->
+<script>
+  import GLightbox from 'glightbox';
+  import 'glightbox/dist/css/glightbox.min.css';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    GLightbox({
+      selector: '.glightbox',
+      touchNavigation: true,
+      loop: true,
+      autoplayVideos: false,
+    });
+  });
+</script>

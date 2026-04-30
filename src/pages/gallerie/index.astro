@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GalleryCard from '../../components/GalleryCard.astro';
+import { getGalleries } from '../../lib/wordpress';
+
+const galleries = await getGalleries();
+---
+
+<BaseLayout title="Gallerie foto">
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">Gallerie foto</h1>
+    <p class="text-gray-500">Una raccolta di momenti catturati nel tempo.</p>
+  </div>
+
+  {galleries.length === 0 ? (
+    <p class="text-gray-400">Nessuna galleria disponibile.</p>
+  ) : (
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {galleries.map(g => <GalleryCard gallery={g} />)}
+    </div>
+  )}
+
+</BaseLayout>
