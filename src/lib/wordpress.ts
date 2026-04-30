@@ -1,16 +1,12 @@
 // WordPress REST API client
-// Backend: WordPress su Aruba (cesarescalise.it/wordpress)
+// Backend: WordPress su Aruba — www.cesarescalise.it/wordpress
 
-const WP_BASE = import.meta.env.PUBLIC_WP_URL ?? 'http://89.46.109.24/wordpress';
-// Se PUBLIC_WP_URL è un IP, inviamo il corretto Host header ad Aruba
-const WP_HOST_OVERRIDE = import.meta.env.WP_HOST_OVERRIDE as string | undefined;
+const WP_BASE = import.meta.env.PUBLIC_WP_URL ?? 'https://www.cesarescalise.it/wordpress';
 const WP_API = `${WP_BASE}/wp-json/wp/v2`;
 const CUSTOM_API = `${WP_BASE}/wp-json/cesarescalise/v1`;
 
 function wpFetch(url: string): Promise<Response> {
-  const headers: Record<string, string> = {};
-  if (WP_HOST_OVERRIDE) headers['Host'] = WP_HOST_OVERRIDE;
-  return fetch(url, { headers });
+  return fetch(url);
 }
 
 // ─── Types ───────────────────────────────────────────────────────────────────
