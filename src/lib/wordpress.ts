@@ -2,21 +2,22 @@
 // Backend: WordPress su Aruba — www.cesarescalise.it/wordpress
 // Usa undici con lookup custom per bypassare il DNS (evita loop Vercel→Vercel)
 
-import { Agent, fetch as uFetch } from 'undici';
+import { Agent, buildConnector, fetch as uFetch } from 'undici';
 
 const WP_BASE = import.meta.env.PUBLIC_WP_URL ?? 'https://www.cesarescalise.it/wordpress';
-// IP fisso di Aruba: bypass DNS per evitare che Vercel si chiami da solo
+// IP fisso di Aruba: bypass DNS per evitare che Vercel risolva www → se stesso
 const WP_ARUBA_IP = import.meta.env.WP_ARUBA_IP ?? '89.46.109.24';
 
 const WP_API = `${WP_BASE}/wp-json/wp/v2`;
 const CUSTOM_API = `${WP_BASE}/wp-json/cesarescalise/v1`;
 
-// Agent con lookup custom: risolve sempre all'IP di Aruba
+// buildConnector + Agent: sostituisce l'IP di destinazione prima della connessione TLS
+// compatibile con undici v5 / Node.js 20
+const connector = buildConnector({});
 const arubaAgent = new Agent({
-  connect: {
-    lookup: (_hostname: string, _opts: unknown, cb: (err: null, addr: string, family: number) => void) => {
-      cb(null, WP_ARUBA_IP, 4);
-    },
+  connect: (opts: Record<string, unknown>, cb: (...args: unknown[]) => void) => {
+    opts.hostname = WP_ARUBA_IP;
+    connector(opts as Parameters<typeof connector>[0], cb as Parameters<typeof connector>[1]);
   },
 });
 
