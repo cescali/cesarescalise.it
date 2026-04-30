@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "_functions/**/*.js": {
-      "runtime": "nodejs20.x"
-    }
-  }
-}
