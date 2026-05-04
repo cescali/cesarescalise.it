@@ -7,36 +7,23 @@
     scroll-behavior: smooth;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold leading-tight;
-  }
-
   /* WordPress post content styling */
   .wp-content {
-    @apply prose prose-gray max-w-none;
+    @apply prose prose-lg prose-gray max-w-none;
   }
 
-  .wp-content p {
-    @apply mb-4 leading-relaxed;
-  }
+  .wp-content p           { @apply mb-4 leading-relaxed; }
+  .wp-content img         { @apply rounded-xl shadow-sm my-6; }
+  .wp-content h2          { @apply text-2xl mt-8 mb-4 font-bold; }
+  .wp-content h3          { @apply text-xl mt-6 mb-3 font-semibold; }
+  .wp-content a           { @apply text-orange-500 hover:underline; }
+  .wp-content blockquote  { @apply border-l-4 border-orange-300 pl-4 italic text-gray-600 my-6; }
 
-  .wp-content img {
-    @apply rounded-lg shadow-sm my-6;
-  }
-
-  .wp-content h2 {
-    @apply text-2xl mt-8 mb-4;
-  }
-
-  .wp-content h3 {
-    @apply text-xl mt-6 mb-3;
-  }
-
-  .wp-content a {
-    @apply text-blue-600 hover:underline;
-  }
-
-  .wp-content blockquote {
-    @apply border-l-4 border-blue-200 pl-4 italic text-gray-600 my-6;
+  /* line-clamp utility (compatibilità) */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }

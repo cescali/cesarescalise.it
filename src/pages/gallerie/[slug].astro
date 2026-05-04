@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getFolderImages, thumbUrl, fullUrl } from '../../lib/cloudinary';
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/gallerie');
+
+const folderPath = decodeURIComponent(slug);
+const images    = await getFolderImages(folderPath);
+
+// Titolo dalla path: "my-trip" → "My Trip"
+const title = folderPath
+  .replace(/-/g, ' ')
+  .replace(/\b\w/g, c => c.toUpperCase());
+---
+
+<BaseLayout title={title}>
+
+  <div class="bg-gray-950 text-white py-16 px-5">
+    <div class="max-w-6xl mx-auto">
+      <a href="/gallerie" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-orange-400 transition-colors mb-6 group">
+        <span class="group-hover:-translate-x-1 transition-transform inline-block">←</span>
+        Tutte le gallerie
+      </a>
+      <p class="text-orange-400 text-sm font-semibold uppercase tracking-widest mb-3">Galleria</p>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold mb-2">{title}</h1>
+      <p class="text-gray-400">{images.length} foto</p>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-5 py-14">
+    {images.length === 0 ? (
+      <p class="text-gray-400">Nessuna foto in questa galleria.</p>
+    ) : (
+      <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4" id="gallery">
+        {images.map((img, i) => (
+          <div class="break-inside-avoid">
+            <a
+              href={fullUrl(img.public_id)}
+              class="glightbox block rounded-xl overflow-hidden hover:opacity-95 transition-opacity shadow-md hover:shadow-xl"
+              data-gallery="gallery-main"
+              data-title={img.public_id.split('/').pop()}
+            >
+              <img
+                src={thumbUrl(img.public_id, 800, 600)}
+                alt={`${title} — foto ${i + 1}`}
+                class="w-full object-cover"
+                loading="lazy"
+              />
+            </a>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+
+</BaseLayout>
+
+<script>
+  import GLightbox from 'glightbox';
+  import 'glightbox/dist/css/glightbox.min.css';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    GLightbox({
+      selector: '.glightbox',
+      touchNavigation: true,
+      loop: true,
+    });
+  });
+</script>

@@ -1,30 +1,36 @@
 ---
-import type { Gallery } from '../lib/wordpress';
+import type { CldFolder } from '../lib/cloudinary';
 
 interface Props {
-  gallery: Gallery;
+  gallery: CldFolder;
 }
 const { gallery } = Astro.props;
-
-const WP_BASE = import.meta.env.PUBLIC_WP_URL ?? 'https://www.cesarescalise.it/wordpress';
-const coverUrl = gallery.cover_url || `${WP_BASE}/wp-content/uploads/gallery-placeholder.jpg`;
 ---
 
 <a
-  href={`/gallerie/${gallery.id}`}
-  class="group block rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+  href={`/gallerie/${encodeURIComponent(gallery.path)}`}
+  class="group block relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-300"
 >
-  <div class="relative aspect-video overflow-hidden bg-gray-100">
-    <img
-      src={coverUrl}
-      alt={gallery.name}
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-      loading="lazy"
-    />
-    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-    <div class="absolute bottom-0 left-0 right-0 p-4">
-      <h3 class="text-white font-semibold text-lg leading-tight">{gallery.name}</h3>
-      <p class="text-white/70 text-sm mt-0.5">{gallery.pic_count} foto</p>
-    </div>
+  <div class="aspect-[4/3] overflow-hidden bg-gray-900">
+    {gallery.coverUrl ? (
+      <img
+        src={gallery.coverUrl}
+        alt={gallery.name}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85 group-hover:opacity-100"
+        loading="lazy"
+      />
+    ) : (
+      <div class="w-full h-full bg-gradient-to-br from-gray-800 to-gray-950 flex items-center justify-center">
+        <span class="text-6xl text-gray-600">📷</span>
+      </div>
+    )}
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+  </div>
+
+  <div class="absolute bottom-0 left-0 right-0 p-5">
+    <h3 class="font-display text-xl font-bold text-white leading-tight mb-2">{gallery.name}</h3>
+    <span class="inline-block text-xs font-semibold bg-orange-500 text-white px-3 py-1 rounded-full">
+      Vedi foto →
+    </span>
   </div>
 </a>

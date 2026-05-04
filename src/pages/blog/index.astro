@@ -4,7 +4,7 @@ import PostCard from '../../components/PostCard.astro';
 import { getPosts, getTotalPostPages } from '../../lib/wordpress';
 
 const page = parseInt(Astro.url.searchParams.get('page') ?? '1', 10);
-const perPage = 8;
+const perPage = 9;
 const [posts, totalPages] = await Promise.all([
   getPosts(perPage, page),
   getTotalPostPages(perPage),
@@ -13,38 +13,44 @@ const [posts, totalPages] = await Promise.all([
 
 <BaseLayout title="Blog">
 
-  <div class="mb-8">
-    <h1 class="text-3xl font-bold mb-2">Blog</h1>
-    <p class="text-gray-500">Articoli su lavoro, vita e passioni.</p>
+  <!-- Hero banner -->
+  <div class="bg-gray-950 text-white py-16 px-5">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-orange-400 text-sm font-semibold uppercase tracking-widest mb-3">Contenuti</p>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold mb-3">Blog</h1>
+      <p class="text-gray-400">Articoli su lavoro, vita e passioni.</p>
+    </div>
   </div>
 
-  {posts.length === 0 ? (
-    <p class="text-gray-400">Nessun articolo disponibile.</p>
-  ) : (
-    <div>
-      {posts.map(post => <PostCard post={post} />)}
-    </div>
-  )}
+  <div class="max-w-6xl mx-auto px-5 py-14">
+    {posts.length === 0 ? (
+      <p class="text-gray-400">Nessun articolo disponibile.</p>
+    ) : (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map(post => <PostCard post={post} />)}
+      </div>
+    )}
 
-  <!-- Paginazione -->
-  {totalPages > 1 && (
-    <nav class="flex justify-center gap-2 mt-10">
-      {page > 1 && (
-        <a href={`/blog?page=${page - 1}`}
-           class="px-4 py-2 rounded-lg border border-gray-200 text-sm hover:border-blue-600 hover:text-blue-600 transition-colors">
-          ← Precedente
-        </a>
-      )}
-      <span class="px-4 py-2 text-sm text-gray-400">
-        Pagina {page} di {totalPages}
-      </span>
-      {page < totalPages && (
-        <a href={`/blog?page=${page + 1}`}
-           class="px-4 py-2 rounded-lg border border-gray-200 text-sm hover:border-blue-600 hover:text-blue-600 transition-colors">
-          Successiva →
-        </a>
-      )}
-    </nav>
-  )}
+    <!-- Paginazione -->
+    {totalPages > 1 && (
+      <nav class="flex justify-center gap-3 mt-14">
+        {page > 1 && (
+          <a href={`/blog?page=${page - 1}`}
+             class="px-5 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold hover:border-orange-500 hover:text-orange-500 transition-colors">
+            ← Precedente
+          </a>
+        )}
+        <span class="px-5 py-2.5 text-sm text-gray-400 font-medium self-center">
+          {page} / {totalPages}
+        </span>
+        {page < totalPages && (
+          <a href={`/blog?page=${page + 1}`}
+             class="px-5 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold hover:border-orange-500 hover:text-orange-500 transition-colors">
+            Successiva →
+          </a>
+        )}
+      </nav>
+    )}
+  </div>
 
 </BaseLayout>

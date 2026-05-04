@@ -7,8 +7,15 @@ interface Props {
   image?: string;
 }
 
-const { title, description = 'Il blog personale di Cesare Scalise', image } = Astro.props;
+const { title, description = 'Il sito personale di Cesare Scalise — blog, gallerie e curriculum', image } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const navLinks = [
+  { href: '/blog',     label: 'Blog' },
+  { href: '/gallerie', label: 'Gallerie' },
+  { href: '/cv',       label: 'CV' },
+];
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -24,36 +31,58 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="canonical" href={canonicalURL} />
 
     {image && <meta property="og:image" content={image} />}
-    <meta property="og:title" content={`${title} — Cesare Scalise`} />
+    <meta property="og:title"       content={`${title} — Cesare Scalise`} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type"        content="website" />
+
+    <!-- Google Fonts: Inter (body) + Playfair Display (headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
 
     <!-- GLightbox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
   </head>
-  <body class="bg-white text-gray-900 antialiased">
+  <body class="bg-white text-gray-900 antialiased font-sans">
 
     <!-- Navbar -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
-      <nav class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="/" class="text-xl font-bold tracking-tight hover:text-blue-600 transition-colors">
+    <header class="sticky top-0 z-50 bg-gray-950 text-white shadow-lg">
+      <nav class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+        <a href="/" class="font-display text-xl font-bold text-white hover:text-orange-400 transition-colors tracking-wide">
           Cesare Scalise
         </a>
-        <ul class="flex gap-6 text-sm font-medium text-gray-600">
-          <li><a href="/blog" class="hover:text-blue-600 transition-colors">Blog</a></li>
-          <li><a href="/gallerie" class="hover:text-blue-600 transition-colors">Gallerie</a></li>
-          <li><a href="/cv" class="hover:text-blue-600 transition-colors">CV</a></li>
+        <ul class="flex gap-8 text-sm font-medium">
+          {navLinks.map(link => (
+            <li>
+              <a
+                href={link.href}
+                class={`transition-colors pb-0.5 ${
+                  currentPath.startsWith(link.href)
+                    ? 'text-orange-400 border-b-2 border-orange-400'
+                    : 'text-gray-300 hover:text-orange-400'
+                }`}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-10 min-h-[calc(100vh-130px)]">
+    <main class="min-h-[calc(100vh-130px)]">
       <slot />
     </main>
 
-    <footer class="border-t border-gray-100 mt-16">
-      <div class="max-w-5xl mx-auto px-4 py-8 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()} Cesare Scalise · Tutti i diritti riservati
+    <footer class="bg-gray-950 text-gray-400 mt-20">
+      <div class="max-w-6xl mx-auto px-5 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="font-display text-white font-bold text-lg">Cesare Scalise</span>
+        <nav class="flex gap-6 text-sm">
+          {navLinks.map(link => (
+            <a href={link.href} class="hover:text-orange-400 transition-colors">{link.label}</a>
+          ))}
+        </nav>
+        <p class="text-xs">© {new Date().getFullYear()} Cesare Scalise</p>
       </div>
     </footer>
 

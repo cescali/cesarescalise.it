@@ -18,31 +18,29 @@ const image = getFeaturedImage(post);
   image={image ?? undefined}
 >
 
-  <article class="max-w-2xl mx-auto">
+  <!-- Hero: immagine in evidenza o barra dark -->
+  {image ? (
+    <div class="w-full aspect-[21/9] max-h-[480px] overflow-hidden bg-gray-900">
+      <img src={image} alt={post.title.rendered} class="w-full h-full object-cover opacity-80" />
+    </div>
+  ) : (
+    <div class="w-full h-24 bg-gray-950" />
+  )}
 
-    <!-- Back -->
-    <a href="/blog" class="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-blue-600 transition-colors mb-8">
-      ← Torna al blog
+  <div class="max-w-3xl mx-auto px-5 py-12">
+
+    <a href="/blog" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-orange-500 transition-colors mb-8 group">
+      <span class="group-hover:-translate-x-1 transition-transform inline-block">←</span>
+      Torna al blog
     </a>
 
-    <!-- Header -->
-    <header class="mb-8">
-      <time class="text-sm text-gray-400 mb-3 block">{formatDate(post.date)}</time>
-      <h1 class="text-3xl sm:text-4xl font-bold leading-tight mb-4" set:html={post.title.rendered} />
+    <header class="mb-10">
+      <time class="text-sm font-semibold text-orange-500 mb-3 block">{formatDate(post.date)}</time>
+      <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight" set:html={post.title.rendered} />
     </header>
 
-    <!-- Featured image -->
-    {image && (
-      <img
-        src={image}
-        alt={post.title.rendered}
-        class="w-full rounded-xl shadow-sm mb-10 aspect-video object-cover"
-      />
-    )}
-
-    <!-- Content -->
     <div class="wp-content" set:html={post.content.rendered} />
 
-  </article>
+  </div>
 
 </BaseLayout>

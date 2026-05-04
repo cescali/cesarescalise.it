@@ -6,35 +6,49 @@ interface Props {
   post: WPPost;
 }
 const { post } = Astro.props;
-const image = getFeaturedImage(post);
-const excerpt = stripHtml(post.excerpt.rendered).slice(0, 160);
+const image   = getFeaturedImage(post);
+const excerpt = stripHtml(post.excerpt.rendered).slice(0, 120);
 ---
 
-<article class="group flex flex-col sm:flex-row gap-5 py-6 border-b border-gray-100 last:border-0">
-  {image && (
-    <a href={`/blog/${post.slug}`} class="flex-shrink-0">
-      <img
-        src={image}
-        alt={post.title.rendered}
-        class="w-full sm:w-44 h-32 object-cover rounded-lg group-hover:opacity-90 transition-opacity"
-        loading="lazy"
-      />
-    </a>
-  )}
-  <div class="flex flex-col justify-center">
-    <time class="text-xs text-gray-400 mb-1">{formatDate(post.date)}</time>
+<article class="group flex flex-col rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-white">
+  <a href={`/blog/${post.slug}`} class="block overflow-hidden">
+    {image ? (
+      <div class="relative aspect-[3/2] overflow-hidden bg-gray-100">
+        <img
+          src={image}
+          alt={post.title.rendered}
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
+        />
+        <div class="absolute top-3 left-3">
+          <time class="text-xs font-semibold bg-orange-500 text-white px-2.5 py-1 rounded-full shadow">
+            {formatDate(post.date)}
+          </time>
+        </div>
+      </div>
+    ) : (
+      <div class="aspect-[3/2] bg-gradient-to-br from-gray-800 to-gray-950 flex items-center justify-center">
+        <span class="text-gray-600 text-5xl">✒️</span>
+      </div>
+    )}
+  </a>
+
+  <div class="p-5 flex flex-col flex-grow">
+    {!image && (
+      <time class="text-xs font-semibold text-orange-500 mb-2 block">{formatDate(post.date)}</time>
+    )}
     <a href={`/blog/${post.slug}`}>
       <h2
-        class="text-lg font-semibold leading-snug group-hover:text-blue-600 transition-colors mb-2"
+        class="font-display text-xl font-bold leading-snug group-hover:text-orange-500 transition-colors mb-3 line-clamp-3"
         set:html={post.title.rendered}
       />
     </a>
-    <p class="text-sm text-gray-500 leading-relaxed">{excerpt}…</p>
+    <p class="text-sm text-gray-500 leading-relaxed flex-grow line-clamp-3">{excerpt}…</p>
     <a
       href={`/blog/${post.slug}`}
-      class="mt-3 text-sm font-medium text-blue-600 hover:underline self-start"
+      class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors self-start"
     >
-      Leggi →
+      Leggi l'articolo →
     </a>
   </div>
 </article>

@@ -1,24 +1,30 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GalleryCard from '../../components/GalleryCard.astro';
-import { getGalleries } from '../../lib/wordpress';
+import { getFolders } from '../../lib/cloudinary';
 
-const galleries = await getGalleries();
+const galleries = await getFolders();
 ---
 
 <BaseLayout title="Gallerie foto">
 
-  <div class="mb-8">
-    <h1 class="text-3xl font-bold mb-2">Gallerie foto</h1>
-    <p class="text-gray-500">Una raccolta di momenti catturati nel tempo.</p>
+  <!-- Hero banner -->
+  <div class="bg-gray-950 text-white py-16 px-5">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-orange-400 text-sm font-semibold uppercase tracking-widest mb-3">Fotografia</p>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold mb-3">Gallerie</h1>
+      <p class="text-gray-400 max-w-xl">Una raccolta di momenti catturati nel tempo.</p>
+    </div>
   </div>
 
-  {galleries.length === 0 ? (
-    <p class="text-gray-400">Nessuna galleria disponibile.</p>
-  ) : (
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {galleries.map(g => <GalleryCard gallery={g} />)}
-    </div>
-  )}
+  <div class="max-w-6xl mx-auto px-5 py-14">
+    {galleries.length === 0 ? (
+      <p class="text-gray-400">Nessuna galleria disponibile. Crea una cartella su Cloudinary per iniziare.</p>
+    ) : (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {galleries.map(g => <GalleryCard gallery={g} />)}
+      </div>
+    )}
+  </div>
 
 </BaseLayout>
