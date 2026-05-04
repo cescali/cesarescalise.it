@@ -4,11 +4,20 @@ import PostCard from '../components/PostCard.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import { getPosts } from '../lib/wordpress';
 import { getFolders } from '../lib/cloudinary';
+import type { WPPost } from '../lib/wordpress';
+import type { CldFolder } from '../lib/cloudinary';
 
-const [posts, galleries] = await Promise.all([
-  getPosts(6),
-  getFolders(),
-]);
+let posts: WPPost[]    = [];
+let galleries: CldFolder[] = [];
+
+try {
+  [posts, galleries] = await Promise.all([getPosts(6), getFolders()]);
+} catch (err) {
+  console.error('[Home] data loading error:', err);
+  // tenta singolarmente
+  try { posts     = await getPosts(6);    } catch {}
+  try { galleries = await getFolders();   } catch {}
+}
 
 const latestGalleries = galleries.slice(0, 3);
 ---
