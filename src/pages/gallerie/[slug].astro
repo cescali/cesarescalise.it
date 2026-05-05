@@ -36,10 +36,11 @@ const title = folderPath
         {images.map((img, i) => (
           <div class="break-inside-avoid">
             <a
-              href={fullUrl(img.public_id)}
+              href={img.secure_url}
               class="glightbox block rounded-xl overflow-hidden hover:opacity-95 transition-opacity shadow-md hover:shadow-xl"
               data-gallery="gallery-main"
-              data-title={img.public_id.split('/').pop()}
+              data-type="image"
+              data-title={img.display_name ?? img.public_id.split('/').pop()}
             >
               <img
                 src={thumbUrl(img.public_id, 800, 600)}

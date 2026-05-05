@@ -28,6 +28,7 @@ export interface CldFolder {
 export interface CldImage {
   public_id: string;
   secure_url: string;
+  display_name?: string;
   width: number;
   height: number;
   format: string;
