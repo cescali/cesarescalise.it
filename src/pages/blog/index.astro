@@ -16,7 +16,7 @@ const [posts, totalPages] = await Promise.all([
   <!-- Hero banner -->
   <div class="bg-gray-950 text-white py-16 px-5">
     <div class="max-w-6xl mx-auto">
-      <p class="text-orange-400 text-sm font-semibold uppercase tracking-widest mb-3">Contenuti</p>
+      <p class="text-indigo-500 text-sm font-semibold uppercase tracking-widest mb-3">Contenuti</p>
       <h1 class="font-display text-4xl sm:text-5xl font-bold mb-3">Blog</h1>
       <p class="text-gray-400">Articoli su lavoro, vita e passioni.</p>
     </div>
@@ -36,7 +36,7 @@ const [posts, totalPages] = await Promise.all([
       <nav class="flex justify-center gap-3 mt-14">
         {page > 1 && (
           <a href={`/blog?page=${page - 1}`}
-             class="px-5 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold hover:border-orange-500 hover:text-orange-500 transition-colors">
+             class="px-5 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold hover:border-indigo-600 hover:text-indigo-600 transition-colors">
             ← Precedente
           </a>
         )}
@@ -45,7 +45,7 @@ const [posts, totalPages] = await Promise.all([
         </span>
         {page < totalPages && (
           <a href={`/blog?page=${page + 1}`}
-             class="px-5 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold hover:border-orange-500 hover:text-orange-500 transition-colors">
+             class="px-5 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold hover:border-indigo-600 hover:text-indigo-600 transition-colors">
             Successiva →
           </a>
         )}

@@ -16,8 +16,8 @@
   .wp-content img         { @apply rounded-xl shadow-sm my-6; }
   .wp-content h2          { @apply text-2xl mt-8 mb-4 font-bold; }
   .wp-content h3          { @apply text-xl mt-6 mb-3 font-semibold; }
-  .wp-content a           { @apply text-orange-500 hover:underline; }
-  .wp-content blockquote  { @apply border-l-4 border-orange-300 pl-4 italic text-gray-600 my-6; }
+  .wp-content a           { @apply text-indigo-600 hover:underline; }
+  .wp-content blockquote  { @apply border-l-4 border-indigo-300 pl-4 italic text-gray-600 my-6; }
 
   /* line-clamp utility (compatibilità) */
   .line-clamp-3 {

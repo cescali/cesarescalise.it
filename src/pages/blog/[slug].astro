@@ -29,13 +29,13 @@ const image = getFeaturedImage(post);
 
   <div class="max-w-3xl mx-auto px-5 py-12">
 
-    <a href="/blog" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-orange-500 transition-colors mb-8 group">
+    <a href="/blog" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-indigo-600 transition-colors mb-8 group">
       <span class="group-hover:-translate-x-1 transition-transform inline-block">←</span>
       Torna al blog
     </a>
 
     <header class="mb-10">
-      <time class="text-sm font-semibold text-orange-500 mb-3 block">{formatDate(post.date)}</time>
+      <time class="text-sm font-semibold text-indigo-600 mb-3 block">{formatDate(post.date)}</time>
       <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight" set:html={post.title.rendered} />
     </header>
 
