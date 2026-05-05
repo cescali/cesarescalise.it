@@ -17,7 +17,7 @@ const SKIP_REQ_HEADERS = new Set(['host', 'connection', 'transfer-encoding']);
 const SKIP_RES_HEADERS = new Set(['transfer-encoding', 'connection', 'keep-alive']);
 
 export const ALL: APIRoute = async ({ request, url }) => {
-  const targetUrl = `http://www.cesarescalise.it${url.pathname}${url.search}`;
+  const targetUrl = `https://www.cesarescalise.it${url.pathname}${url.search}`;
 
   const reqHeaders: Record<string, string> = { host: 'www.cesarescalise.it' };
   request.headers.forEach((value, key) => {
