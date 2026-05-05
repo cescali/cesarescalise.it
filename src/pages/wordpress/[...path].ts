@@ -14,12 +14,15 @@ const arubaAgent = new Agent({
 });
 
 const SKIP_REQ_HEADERS = new Set(['host', 'connection', 'transfer-encoding']);
-const SKIP_RES_HEADERS = new Set(['transfer-encoding', 'connection', 'keep-alive']);
+const SKIP_RES_HEADERS = new Set(['transfer-encoding', 'connection', 'keep-alive', 'content-encoding']);
 
 export const ALL: APIRoute = async ({ request, url }) => {
   const targetUrl = `https://www.cesarescalise.it${url.pathname}${url.search}`;
 
-  const reqHeaders: Record<string, string> = { host: 'www.cesarescalise.it' };
+  const reqHeaders: Record<string, string> = {
+    host: 'www.cesarescalise.it',
+    'accept-encoding': 'identity', // prevent gzip/br compression issues through proxy
+  };
   request.headers.forEach((value, key) => {
     if (!SKIP_REQ_HEADERS.has(key.toLowerCase())) reqHeaders[key] = value;
   });
