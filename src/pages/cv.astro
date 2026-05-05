@@ -1,56 +1,166 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getPage } from '../lib/wordpress';
-
-const page = await getPage('cv');
 ---
 
 <BaseLayout title="Curriculum Vitae">
 
-  <div class="bg-gray-950 text-white py-16 px-5">
-    <div class="max-w-3xl mx-auto">
-      <p class="text-indigo-500 text-sm font-semibold uppercase tracking-widest mb-3">Profilo</p>
-      <h1 class="font-display text-4xl sm:text-5xl font-bold">Curriculum Vitae</h1>
+  <!-- Hero -->
+  <div class="bg-gradient-to-br from-indigo-50 via-white to-white py-16 px-5 border-b border-gray-200">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+      <div>
+        <p class="text-indigo-600 text-sm font-semibold uppercase tracking-widest mb-2">Profilo</p>
+        <h1 class="font-display text-4xl sm:text-5xl font-bold text-gray-900 mb-1">Cesare Scalise</h1>
+        <p class="text-lg text-gray-500 font-medium">Senior Software Developer &amp; Team Leader</p>
+        <div class="flex flex-wrap gap-4 mt-4 text-sm text-gray-500">
+          <span>✉️ cesare.scalise@gmail.com</span>
+          <span>📞 +39 347 839 2591</span>
+          <span>📍 Settimo Torinese (TO)</span>
+        </div>
+      </div>
+      <a
+        href="/CV_Scalise_Cesare_Moderno.pdf"
+        download
+        class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold transition-colors shadow-md whitespace-nowrap"
+      >
+        ⬇️ Scarica CV (PDF)
+      </a>
     </div>
   </div>
 
-  <div class="max-w-3xl mx-auto px-5 py-14">
+  <div class="max-w-4xl mx-auto px-5 py-14 space-y-12">
 
-    {page ? (
-      <div class="wp-content" set:html={page.content.rendered} />
-    ) : (
+    <!-- Profilo -->
+    <section>
+      <h2 class="font-display text-2xl font-bold text-indigo-600 border-b border-indigo-100 pb-2 mb-5">Profilo Professionale</h2>
+      <p class="text-gray-600 leading-relaxed">
+        Sviluppatore software senior con oltre 25 anni di esperienza nel settore IT, specializzato in applicazioni
+        enterprise Java e web. Dal 2016 ricopre il ruolo di Team Leader presso Engineering Ingegneria Informatica,
+        coordinando team tecnici su progetti complessi per clienti pubblici e privati di rilievo nazionale.
+        Certificato Oracle Java SE 8 e Professional Scrum Developer. Membro di commissione d'esame presso
+        Fondazione ITS ICT Torino.
+      </p>
+    </section>
+
+    <!-- Esperienza -->
+    <section>
+      <h2 class="font-display text-2xl font-bold text-indigo-600 border-b border-indigo-100 pb-2 mb-6">Esperienza Lavorativa</h2>
+
       <div class="space-y-8">
 
-        <section>
-          <h2 class="text-xl font-semibold text-indigo-600 border-b border-orange-100 pb-2 mb-4">Chi sono</h2>
-          <p class="text-gray-600 leading-relaxed">
-            Cesare Scalise. Aggiorna questa sezione modificando la pagina "cv" in WordPress,
-            oppure modificando direttamente questo file.
-          </p>
-        </section>
+        <!-- Engineering -->
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+            <h3 class="font-semibold text-lg text-gray-900">Team Leader / Senior Solution Developer</h3>
+            <span class="text-sm text-gray-400 whitespace-nowrap">Gen 2016 – Presente</span>
+          </div>
+          <p class="text-indigo-600 font-medium text-sm mb-3">Engineering Ingegneria Informatica S.P.A. — Torino</p>
+          <ul class="space-y-3 text-sm text-gray-600">
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><span>Coordinamento tecnico del team di sviluppo, gestione attività, definizione priorità e supporto ai colleghi junior nelle scelte architetturali e tecnologiche</span></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><div><strong class="text-gray-800">Fiat Link</strong> — Evoluzione e manutenzione degli applicativi di vendita, post-vendita e assistenza veicoli del Gruppo FCA su sistemi mission-critical<br/><span class="text-gray-400 text-xs mt-0.5 block">Stack: PHP, Oracle, JavaScript (ExtJS)</span></div></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><div><strong class="text-gray-800">Portale Regione Emilia-Romagna e Calabria</strong> — Portali per la gestione di bandi pubblici e servizi ai cittadini<br/><span class="text-gray-400 text-xs mt-0.5 block">Stack: Java EE, Hibernate, JSF, Bootstrap, PrimeFaces</span></div></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><div><strong class="text-gray-800">NAO – Nuova Anagrafica Open</strong> — Sistema anagrafico centralizzato per il Comune di Torino con CSI Piemonte<br/><span class="text-gray-400 text-xs mt-0.5 block">Stack: Java EE, Java Swing</span></div></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><div><strong class="text-gray-800">STARDAS e Portale DWD</strong> — Sistema di integrazione dati e portale documentale per CSI Piemonte, progettato per gestire diversi milioni di richieste annue<br/><span class="text-gray-400 text-xs mt-0.5 block">Stack: Java 8, Spring, Hibernate, JPA, PostgreSQL, SOAP/REST, CXF</span></div></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><div><strong class="text-gray-800">AirValid</strong> — Applicativo per il monitoraggio e la validazione della qualità dell'aria per CSI Piemonte<br/><span class="text-gray-400 text-xs mt-0.5 block">Stack: Angular, Bootstrap</span></div></li>
+          </ul>
+        </div>
 
-        <section>
-          <h2 class="text-xl font-semibold text-indigo-600 border-b border-orange-100 pb-2 mb-4">Esperienze</h2>
-          <p class="text-gray-400 text-sm">Aggiungi le tue esperienze lavorative in WordPress.</p>
-        </section>
-
-        <section>
-          <h2 class="text-xl font-semibold text-indigo-600 border-b border-orange-100 pb-2 mb-4">Formazione</h2>
-          <p class="text-gray-400 text-sm">Aggiungi la tua formazione in WordPress.</p>
-        </section>
-
-        <div class="mt-8 pt-6 border-t border-gray-100">
-          <a
-            href="/documenti/CVCesareA.doc"
-            class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold transition-colors shadow-lg"
-            download
-          >
-            📄 Scarica CV (DOC)
-          </a>
+        <!-- Linear System -->
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+            <h3 class="font-semibold text-lg text-gray-900">Progettista Tecnico Senior</h3>
+            <span class="text-sm text-gray-400 whitespace-nowrap">Gen 2001 – Nov 2016</span>
+          </div>
+          <p class="text-indigo-600 font-medium text-sm mb-3">Linear System S.r.l. — Torino</p>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><span><strong class="text-gray-800">Fiat Link / Engineering</strong> (Mar 2013 – Nov 2016) — Vendita e post-vendita Fiat <span class="text-gray-400">| PHP, Oracle, ExtJS</span></span></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><span><strong class="text-gray-800">Telecom Italia</strong> (Ott 2012 – Mar 2013) — Fatturazione Varia, integrazione Web Service VCTO-SAP <span class="text-gray-400">| Java, Axis 2</span></span></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><span><strong class="text-gray-800">CSI Piemonte</strong> (Ott 2011 – Set 2012) — Portale OpenData e Banca Dati Eletti <span class="text-gray-400">| PHP, MySQL, Java EE, Struts, Oracle</span></span></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><span><strong class="text-gray-800">Fiat Link / Engineering</strong> (Gen 2008 – Ago 2012) — Gestione vendita e assistenza veicoli <span class="text-gray-400">| PHP, Oracle, ExtJS</span></span></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><span><strong class="text-gray-800">Snam Rete Gas / Atos Origin</strong> (Ago – Dic 2007) — Nuovo portale aziendale <span class="text-gray-400">| Java EE, Struts, Oracle</span></span></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><span><strong class="text-gray-800">Lottomatica</strong> (Set 2005 – Lug 2007) — Portale gestione giochi online <span class="text-gray-400">| Java EE, Oracle DB</span></span></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><span><strong class="text-gray-800">Interactim / TIM Tilab</strong> (Ago 2003 – Ago 2005) — Portale clientela telefonia mobile <span class="text-gray-400">| Java EE, Oracle DB</span></span></li>
+            <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">▸</span><span><strong class="text-gray-800">Sanpaolo IMI</strong> (Gen 2001 – Lug 2003) — Applicativi area crediti</span></li>
+          </ul>
         </div>
 
       </div>
-    )}
+    </section>
+
+    <!-- Competenze -->
+    <section>
+      <h2 class="font-display text-2xl font-bold text-indigo-600 border-b border-indigo-100 pb-2 mb-5">Competenze Tecniche</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+        {[
+          { label: 'Linguaggi', value: 'Java EE, PHP, JavaScript, TypeScript, PL/SQL, HTML5, CSS3' },
+          { label: 'Framework', value: 'Spring, SpringBoot, Hibernate, JPA, Angular, JSF, PrimeFaces, Bootstrap, Struts, ExtJS, jQuery, Axis2' },
+          { label: 'Database', value: 'Oracle, PostgreSQL, MySQL, SQL Server' },
+          { label: 'Web Services', value: 'REST, SOAP, CXF' },
+          { label: 'DevOps & Tools', value: 'Git, SVN, CVS, Maven, Ant, Apache, JBoss, Tomcat' },
+          { label: 'IDE', value: 'Eclipse, NetBeans, Zend Studio, Sencha Architect, PL/SQL Developer' },
+          { label: 'CMS', value: 'Joomla, WordPress' },
+          { label: 'Sistemi Operativi', value: 'Windows, Linux' },
+          { label: 'Metodologie', value: 'Scrum, MVC, OOP, Web Services, Pattern di Design' },
+          { label: 'AI & Strumenti', value: 'GitHub Copilot (sviluppo assistito da AI)' },
+        ].map(({ label, value }) => (
+          <div class="flex gap-3 bg-gray-50 rounded-lg px-4 py-3">
+            <span class="font-semibold text-indigo-700 min-w-[110px]">{label}</span>
+            <span class="text-gray-600">{value}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Certificazioni -->
+    <section>
+      <h2 class="font-display text-2xl font-bold text-indigo-600 border-b border-indigo-100 pb-2 mb-5">Certificazioni</h2>
+      <ul class="space-y-2 text-sm text-gray-600">
+        <li class="flex gap-2"><span class="text-indigo-400">▸</span><span><strong class="text-gray-800">Professional Scrum Developer I (PSD I)</strong> — Scrum.org — Febbraio 2024</span></li>
+        <li class="flex gap-2"><span class="text-indigo-400">▸</span><span><strong class="text-gray-800">Oracle Certified Associate, Java SE 8 Programmer</strong> — Oracle — Marzo 2019</span></li>
+      </ul>
+    </section>
+
+    <!-- Formazione -->
+    <section>
+      <h2 class="font-display text-2xl font-bold text-indigo-600 border-b border-indigo-100 pb-2 mb-5">Istruzione e Formazione</h2>
+      <ul class="space-y-2 text-sm text-gray-600">
+        <li class="flex gap-2"><span class="text-indigo-400">▸</span><span>Diploma di Perito Meccanico (Progetto ERGON) — I.T.I.S. Leonardo da Vinci, Chivasso (Torino)</span></li>
+        <li class="flex gap-2"><span class="text-indigo-400">▸</span><span>Corso di specializzazione Java J2EE &amp; Oracle PL/SQL — Gen 2000 – Giu 2000</span></li>
+        <li class="flex gap-2"><span class="text-indigo-400">▸</span><span>Corso Android – Sviluppo APP — Apr 2012 – Mag 2012</span></li>
+        <li class="flex gap-2"><span class="text-indigo-400">▸</span><span>Membro di commissione d'esame — Fondazione ITS ICT Torino — dal 2022</span></li>
+      </ul>
+    </section>
+
+    <!-- Lingue e Altro -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <section>
+        <h2 class="font-display text-2xl font-bold text-indigo-600 border-b border-indigo-100 pb-2 mb-5">Lingue</h2>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li class="flex gap-2"><span class="text-indigo-400">▸</span><span><strong class="text-gray-800">Italiano</strong> — Madrelingua</span></li>
+          <li class="flex gap-2"><span class="text-indigo-400">▸</span><span><strong class="text-gray-800">Inglese</strong> — Livello intermedio (lettura e comprensione tecnica)</span></li>
+        </ul>
+      </section>
+      <section>
+        <h2 class="font-display text-2xl font-bold text-indigo-600 border-b border-indigo-100 pb-2 mb-5">Altro</h2>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li class="flex gap-2"><span class="text-indigo-400">▸</span><span>Patente di guida tipo B</span></li>
+          <li class="flex gap-2"><span class="text-indigo-400">▸</span><span>Interessi: modellismo dinamico, viaggi, informatica e sviluppo tools personalizzati</span></li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Footer CV + download -->
+    <div class="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-xs text-gray-400 italic">
+        Autorizzo il trattamento dei dati personali ai sensi del D.Lgs. 196/2003 e del Regolamento UE 2016/679 (GDPR).
+      </p>
+      <a
+        href="/CV_Scalise_Cesare_Moderno.pdf"
+        download
+        class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold transition-colors shadow-md whitespace-nowrap"
+      >
+        ⬇️ Scarica CV (PDF)
+      </a>
+    </div>
 
   </div>
 
