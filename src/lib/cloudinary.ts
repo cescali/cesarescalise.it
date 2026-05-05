@@ -71,12 +71,26 @@ export async function getFolders(): Promise<CldFolder[]> {
   }
 }
 
+// Cloudinary supporta due modalità: "Fixed Folder" (public_id con prefisso) e
+// "Dynamic Folder" (asset_folder separato). Usiamo la Search API che funziona in entrambi i casi.
+async function searchByFolder(folderPath: string, maxResults = 100, nextCursor?: string): Promise<{ resources: CldImage[]; next_cursor?: string }> {
+  const params = new URLSearchParams({
+    expression: `asset_folder="${folderPath}"`,
+    max_results: String(maxResults),
+  });
+  if (nextCursor) params.set('next_cursor', nextCursor);
+  const url = `${ADMIN_BASE()}/resources/search?${params.toString()}`;
+  const res = await cldFetch(url);
+  if (!res.ok) {
+    console.error(`[Cloudinary] /resources/search error: ${res.status} ${res.statusText}`);
+    return { resources: [] };
+  }
+  return res.json() as Promise<{ resources: CldImage[]; next_cursor?: string }>;
+}
+
 async function getFolderFirstImage(folderPath: string): Promise<CldImage | null> {
   try {
-    const url = `${ADMIN_BASE()}/resources/image?type=upload&prefix=${encodeURIComponent(folderPath + '/')}&max_results=1`;
-    const res = await cldFetch(url);
-    if (!res.ok) return null;
-    const data = await res.json() as { resources: CldImage[] };
+    const data = await searchByFolder(folderPath, 1);
     return data.resources?.[0] ?? null;
   } catch {
     return null;
@@ -91,14 +105,7 @@ export async function getFolderImages(folderPath: string): Promise<CldImage[]> {
 
   try {
     do {
-      const cursorParam = nextCursor ? `&next_cursor=${nextCursor}` : '';
-      const url = `${ADMIN_BASE()}/resources/image?type=upload&prefix=${encodeURIComponent(folderPath + '/')}&max_results=100${cursorParam}`;
-      const res = await cldFetch(url);
-      if (!res.ok) {
-        console.error(`[Cloudinary] /resources error: ${res.status} ${res.statusText}`);
-        break;
-      }
-      const data = await res.json() as { resources: CldImage[]; next_cursor?: string };
+      const data = await searchByFolder(folderPath, 100, nextCursor);
       all.push(...(data.resources ?? []));
       nextCursor = data.next_cursor;
     } while (nextCursor);
