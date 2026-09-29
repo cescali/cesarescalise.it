@@ -14,6 +14,7 @@ const navLinks = [
   { href: '/blog',     label: 'Blog' },
   { href: '/gallerie', label: 'Gallerie' },
   { href: '/cv',       label: 'CV' },
+  { href: 'https://meteo-piemonte.vercel.app', label: 'Meteo Piemonte', external: true },
 ];
 const currentPath = Astro.url.pathname;
 ---
@@ -56,13 +57,15 @@ const currentPath = Astro.url.pathname;
             <li>
               <a
                 href={link.href}
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
                 class={`transition-colors pb-0.5 ${
-                  currentPath.startsWith(link.href)
+                  !link.external && currentPath.startsWith(link.href)
                     ? 'text-indigo-600 border-b-2 border-indigo-600'
                     : 'text-gray-600 hover:text-indigo-600'
                 }`}
               >
-                {link.label}
+                {link.label}{link.external && ' ↗'}
               </a>
             </li>
           ))}
@@ -79,7 +82,14 @@ const currentPath = Astro.url.pathname;
         <span class="font-display text-gray-900 font-bold text-lg">Cesare Scalise</span>
         <nav class="flex gap-6 text-sm">
           {navLinks.map(link => (
-            <a href={link.href} class="hover:text-indigo-600 transition-colors">{link.label}</a>
+            <a
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+              class="hover:text-indigo-600 transition-colors"
+            >
+              {link.label}{link.external && ' ↗'}
+            </a>
           ))}
         </nav>
         <p class="text-xs">© {new Date().getFullYear()} Cesare Scalise</p>
