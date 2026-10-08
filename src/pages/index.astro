@@ -19,7 +19,7 @@ try {
   try { galleries = await getFolders();   } catch {}
 }
 
-const latestGalleries = galleries.slice(0, 3);
+const latestGalleries = galleries.slice(0, 4);
 
 const socials = [
   { name: 'Instagram', url: 'https://www.instagram.com/cesarescalise.it/',          icon: 'instagram' },
@@ -75,6 +75,22 @@ const socials = [
           </a>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section class="max-w-3xl mx-auto px-5 -mt-2 mb-10">
+    <div class="bg-indigo-50 border border-indigo-100 rounded-2xl px-6 py-5 text-center">
+      <p class="text-indigo-600 text-xs font-semibold uppercase tracking-widest mb-2">News</p>
+      <p class="text-gray-900 font-bold text-lg leading-snug">
+        Ho pubblicato il mio primo romanzo, PROGETTO NEMESIS.
+      </p>
+      <p class="text-gray-500 text-sm mt-1">
+        Un action thriller tra tecnologia, intelligence e sabotaggio navale.
+      </p>
+      <a href="/libri" class="inline-block mt-3 text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition-colors">
+        Scopri il libro →
+      </a>
     </div>
   </section>
 
