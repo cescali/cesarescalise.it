@@ -49,17 +49,17 @@ const books = page ? extractBooks(page.content.rendered) : [];
 
 <BaseLayout title="Libri" description="I libri di Cesare Scalise">
 
-  <div class="max-w-5xl mx-auto px-5 py-6 lg:py-8 lg:h-[calc(100vh-170px)] lg:flex lg:flex-col">
+  <div class="max-w-5xl xl:max-w-6xl mx-auto px-5 py-6 lg:py-8 lg:h-[calc(100vh-170px)] lg:flex lg:flex-col">
     <p class="text-indigo-600 text-xs font-semibold uppercase tracking-widest mb-4 shrink-0">Libri</p>
 
     {books.length > 0 ? (
       books.map(book => (
         <article class="flex flex-col lg:flex-row gap-6 lg:gap-10 lg:flex-1 lg:min-h-0 mb-10 lg:mb-0">
-          <div class="shrink-0 flex justify-center lg:justify-start">
+          <div class="shrink-0 w-full sm:w-64 lg:w-72 xl:w-80 mx-auto lg:mx-0">
             <img
               src={book.coverSrc}
               alt={book.coverAlt || 'Copertina del libro'}
-              class="rounded-lg shadow-lg object-contain max-h-[45vh] lg:max-h-full w-auto"
+              class="rounded-lg shadow-lg object-contain w-full h-auto max-h-[45vh] lg:max-h-full mx-auto"
             />
           </div>
           <div class="libri-desc min-w-0 lg:flex-1 lg:overflow-y-auto lg:pr-2">
