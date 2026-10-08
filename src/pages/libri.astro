@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPage } from '../lib/wordpress';
+
+const page = await getPage('libri');
+---
+
+<BaseLayout title="Libri" description={page ? undefined : 'I libri di Cesare Scalise'}>
+
+  <!-- Hero -->
+  <div class="bg-gradient-to-br from-indigo-50 via-white to-white py-16 px-5 border-b border-gray-200">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-indigo-600 text-sm font-semibold uppercase tracking-widest mb-2">Scrittura</p>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold text-gray-900">Libri</h1>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-5 py-14">
+    {page ? (
+      <div class="wp-content" set:html={page.content.rendered} />
+    ) : (
+      <p class="text-gray-400">Nessun contenuto disponibile al momento.</p>
+    )}
+  </div>
+
+</BaseLayout>
