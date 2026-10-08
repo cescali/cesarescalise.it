@@ -50,7 +50,7 @@ const books = page ? extractBooks(page.content.rendered) : [];
 <BaseLayout title="Libri" description="I libri di Cesare Scalise">
 
   <div class="max-w-5xl mx-auto px-5 py-6 lg:py-8 lg:h-[calc(100vh-170px)] lg:flex lg:flex-col">
-    <p class="text-indigo-600 text-xs font-semibold uppercase tracking-widest mb-4 shrink-0">Scrittura</p>
+    <p class="text-indigo-600 text-xs font-semibold uppercase tracking-widest mb-4 shrink-0">Libri</p>
 
     {books.length > 0 ? (
       books.map(book => (
