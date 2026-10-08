@@ -62,8 +62,16 @@ const books = page ? extractBooks(page.content.rendered) : [];
 
 <BaseLayout title="Libri" description="I libri di Cesare Scalise">
 
-  <div class="max-w-5xl xl:max-w-6xl mx-auto px-5 py-6 lg:py-8 lg:h-[calc(100vh-170px)] lg:flex lg:flex-col">
-    <p class="text-indigo-600 text-xs font-semibold uppercase tracking-widest mb-4 shrink-0">Libri</p>
+  <!-- Hero banner (stesso stile di Blog/Gallerie, altezza dimezzata) -->
+  <div class="bg-gray-950 text-white py-8 px-5">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-indigo-500 text-sm font-semibold uppercase tracking-widest mb-3">Scrittura</p>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold mb-3">Libri</h1>
+      <p class="text-gray-400">I miei romanzi e scritti.</p>
+    </div>
+  </div>
+
+  <div class="max-w-5xl xl:max-w-6xl mx-auto px-5 py-6 lg:py-8 lg:h-[calc(100vh-320px)] lg:flex lg:flex-col">
 
     {books.length > 0 ? (
       books.map(book => (

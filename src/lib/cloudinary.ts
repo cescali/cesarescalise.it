@@ -54,7 +54,13 @@ export async function getFolders(): Promise<CldFolder[]> {
       return [];
     }
     const data = await res.json() as { folders: Array<{ name: string; path: string }> };
-    const folders = (data.folders ?? []).sort((a, b) => a.name.localeCompare(b.name));
+    const folders = (data.folders ?? []).sort((a, b) => {
+      // Ordina per anno (contenuto nel nome, es. "Sicilia 2025") dal più recente.
+      const yearA = parseInt(a.name.match(/\d{4}/)?.[0] ?? '0', 10);
+      const yearB = parseInt(b.name.match(/\d{4}/)?.[0] ?? '0', 10);
+      if (yearB !== yearA) return yearB - yearA;
+      return a.name.localeCompare(b.name);
+    });
 
     return Promise.all(
       folders.map(async (f) => {
