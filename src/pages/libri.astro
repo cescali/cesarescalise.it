@@ -10,6 +10,8 @@ interface Book {
   coverSrc: string;
   coverAlt: string;
   descriptionHtml: string;
+  linkUrl: string;
+  linkText: string;
 }
 
 // Il contenuto WordPress è un blocco "media-text" (copertina + testo).
@@ -39,7 +41,18 @@ function extractBooks(html: string): Book[] {
       descriptionHtml = mediaInner.slice(tagEnd).trim();
     }
 
-    books.push({ titleHtml, taglineHtml, coverSrc, coverAlt, descriptionHtml });
+    // Estrae l'ultimo link (es. "Scopri il romanzo su Amazon") per
+    // trasformarlo in un pulsante con lo stesso stile degli altri bottoni del sito.
+    let linkUrl = '';
+    let linkText = '';
+    const linkMatch = descriptionHtml.match(/<p>\s*<a href="([^"]+)">([^<]+)<\/a>\s*<\/p>\s*$/);
+    if (linkMatch) {
+      linkUrl = linkMatch[1];
+      linkText = linkMatch[2];
+      descriptionHtml = descriptionHtml.slice(0, linkMatch.index).trim();
+    }
+
+    books.push({ titleHtml, taglineHtml, coverSrc, coverAlt, descriptionHtml, linkUrl, linkText });
   }
   return books;
 }
@@ -66,6 +79,16 @@ const books = page ? extractBooks(page.content.rendered) : [];
             <h1 class="font-display text-2xl sm:text-3xl font-bold text-gray-900 mb-2" set:html={book.titleHtml} />
             <p class="text-gray-600 italic text-sm sm:text-base mb-4" set:html={book.taglineHtml} />
             <div class="wp-content text-sm sm:text-base leading-snug" set:html={book.descriptionHtml} />
+            {book.linkUrl && (
+              <a
+                href={book.linkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-block mt-2 px-7 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold transition-colors shadow-md"
+              >
+                {book.linkText}
+              </a>
+            )}
           </div>
         </article>
       ))
