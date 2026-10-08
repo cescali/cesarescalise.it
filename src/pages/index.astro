@@ -33,12 +33,12 @@ const socials = [
 <BaseLayout title="Home">
 
   <!-- Hero -->
-  <section class="bg-gradient-to-br from-indigo-50 via-white to-white pt-28 pb-[90px] px-5">
+  <section class="bg-gradient-to-br from-indigo-50 via-white to-white pt-14 pb-[90px] px-5">
     <div class="max-w-6xl mx-auto text-center">
       <p class="text-indigo-600 font-semibold text-sm uppercase tracking-widest mb-5">Benvenuto nel mio spazio</p>
       <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-gray-900">
-        Ciao, sono<br/>
-        <span class="text-indigo-600">Cesare Scalise</span>
+        Ciao, sono<br class="2xl:hidden"/>
+        <span class="2xl:ml-4 text-indigo-600">Cesare Scalise</span>
       </h1>
       <p class="text-lg text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
         Scrivo del mio lavoro, delle mie passioni e condivido foto dei miei viaggi e avventure.
@@ -92,7 +92,7 @@ const socials = [
     {posts.length === 0 ? (
       <p class="text-gray-400">Nessun articolo trovato.</p>
     ) : (
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
         {posts.map(post => <PostCard post={post} />)}
       </div>
     )}
@@ -114,7 +114,7 @@ const socials = [
             Tutte le gallerie →
           </a>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
           {latestGalleries.map(g => <GalleryCard gallery={g} />)}
         </div>
       </div>
