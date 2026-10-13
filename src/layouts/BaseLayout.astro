@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title: string;
@@ -160,6 +161,8 @@ const currentPath = Astro.url.pathname;
         <p class="text-xs">© {new Date().getFullYear()} Cesare Scalise</p>
       </div>
     </footer>
+	
+	<Analytics />
 
   </body>
 </html>
