@@ -261,3 +261,34 @@ variabili vengono lette solo al momento della pubblicazione.
 | Cambiare colori, bottoni, spazi, layout | Codice (Astro) | Sì, con git push |
 | Aggiungere una nuova pagina del sito | Codice (Astro) | Sì, con git push |
 | Cambiare dove punta il dominio | Aruba (DNS) | No |
+
+---
+
+## 13. SEO: farsi trovare su Google (sitemap e robots.txt)
+
+Per aiutare Google (e gli altri motori di ricerca) a trovare e capire tutte
+le pagine del sito, sono stati aggiunti due "biglietti da visita" automatici:
+
+### La sitemap (elenco di tutte le pagine)
+- Indirizzo: https://www.cesarescalise.it/sitemap.xml
+- È una lista di tutti gli indirizzi del sito: homepage, blog, gallerie,
+  libri, CV, e **ogni singolo articolo e ogni singola galleria**
+- È **automatica**: se aggiungi un nuovo articolo su WordPress o una nuova
+  galleria su Cloudinary, comparirà da sola nella sitemap, senza bisogno di
+  pubblicare nulla
+
+### Il file robots.txt (istruzioni per i motori di ricerca)
+- Indirizzo: https://www.cesarescalise.it/robots.txt
+- Dice a Google "puoi leggere tutto il sito" e indica dove trovare la sitemap
+- Questo file invece è "fisso": se va cambiato, serve ripubblicare il codice
+  (git push) come per le modifiche grafiche
+
+### Come velocizzare l'indicizzazione su Google (operazione una tantum)
+1. Vai su https://search.google.com/search-console
+2. Accedi con un account Google, aggiungi la proprietà `cesarescalise.it`
+3. Segui la verifica proposta da Google (di solito basta un record DNS o un
+   file da caricare — se serve aiuto, chiedimelo)
+4. Una volta verificato, vai su **Sitemap** nel menu a sinistra
+5. Scrivi `sitemap.xml` e clicca **Invia**
+6. Google inizierà a scansionare il sito più rapidamente (ci mette comunque
+   da qualche giorno a qualche settimana per i primi risultati)

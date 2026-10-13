@@ -121,6 +121,7 @@ src/
     libri.astro         → Pagina Libri (layout cover + descrizione)
     cv.astro           → Curriculum Vitae
     wordpress/[...path].ts  → Reverse-proxy verso WP Admin (login/upload)
+    sitemap.xml.ts      → Sitemap XML dinamica (SEO)
   components/
     PostCard.astro
     GalleryCard.astro
@@ -131,7 +132,28 @@ src/
     cloudinary.ts        → Client Cloudinary (gallerie, ordinate per anno)
 wp-plugin/
   cesarescalise-api.php  → Plugin WP legacy, non più usato dal frontend
+public/
+  robots.txt            → Direttive per i motori di ricerca, punta alla sitemap
 ```
+
+---
+
+## 🔍 SEO (sitemap e robots.txt)
+
+- **Sitemap**: `https://www.cesarescalise.it/sitemap.xml` — generata
+  dinamicamente da `src/pages/sitemap.xml.ts` a ogni richiesta (non è un file
+  statico): include homepage, `/blog/`, `/gallerie/`, `/libri/`, `/cv/`, tutti
+  gli articoli del blog (letti da WordPress) e tutte le gallerie (cartelle
+  Cloudinary). Se aggiungi un nuovo articolo o una nuova galleria, compare
+  automaticamente nella sitemap senza bisogno di ripubblicare nulla.
+- **Robots.txt**: `https://www.cesarescalise.it/robots.txt` — file statico in
+  `public/robots.txt`, permette l'accesso a tutti i motori di ricerca e indica
+  l'indirizzo della sitemap. Per modificarlo basta editare il file ed eseguire
+  commit/push (va ripubblicato, a differenza della sitemap).
+- Dopo la prima pubblicazione, è consigliato registrare il sito su **Google
+  Search Console** (https://search.google.com/search-console) e inviare la
+  sitemap da lì (Sitemaps → inserisci `sitemap.xml`) per velocizzare
+  l'indicizzazione.
 
 ---
 
@@ -145,3 +167,4 @@ wp-plugin/
 | Immagini non si vedono | URL WP errato | Controllare `PUBLIC_WP_URL` su Vercel |
 | "Cross-site POST form submissions are forbidden" al login/upload WP | `security.checkOrigin` di Astro 5 blocca il proxy | Verificare che `astro.config.mjs` abbia `security: { checkOrigin: false }` |
 | Gallerie non aggiornate / ordine sbagliato | Nome cartella Cloudinary non in formato "Nome AAAA" | Rinominare la cartella su Cloudinary con l'anno in fondo |
+| Il sito non compare su Google | Sitemap non inviata a Search Console | Registrare il sito e inviare `sitemap.xml` su Google Search Console |

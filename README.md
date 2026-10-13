@@ -43,6 +43,14 @@ Apri http://localhost:4321
 1. Su Vercel → Settings → Domains → aggiungi `cesarescalise.it`
 2. Su Aruba → pannello DNS → modifica record A puntando all IP Vercel
 
+## SEO (sitemap e robots.txt)
+
+- `src/pages/sitemap.xml.ts` genera dinamicamente `https://www.cesarescalise.it/sitemap.xml`
+  (homepage, blog, gallerie, libri, cv — aggiornata automaticamente a ogni
+  richiesta, nessun redeploy necessario quando cambiano i contenuti)
+- `public/robots.txt` indica ai motori di ricerca che il sito è indicizzabile
+  e punta alla sitemap
+
 ## Struttura progetto
 
 ```
