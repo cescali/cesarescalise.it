@@ -28,6 +28,7 @@ function wpFetch(url: string): Promise<Response> {
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export interface WPPost {
+  modified: string;
   id: number;
   slug: string;
   title: { rendered: string };
