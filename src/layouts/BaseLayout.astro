@@ -32,10 +32,23 @@ const currentPath = Astro.url.pathname;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
 
-    {image && <meta property="og:image" content={image} />}
-    <meta property="og:title"       content={`${title} — Cesare Scalise`} />
+    <meta property="og:title" content={`${title} — Cesare Scalise`} />
     <meta property="og:description" content={description} />
-    <meta property="og:type"        content="website" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:site_name" content="Cesare Scalise" />
+    
+    {image && (
+      <meta property="og:image" content={new URL(image, Astro.site).href} />
+    )}
+    
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={`${title} — Cesare Scalise`} />
+    <meta name="twitter:description" content={description} />
+    {image && (
+      <meta name="twitter:image" content={new URL(image, Astro.site).href} />
+    )}
 
     <!-- Google Fonts: Inter (body) + Playfair Display (headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
