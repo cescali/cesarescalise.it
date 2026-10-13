@@ -85,6 +85,12 @@ const bookSchema = {
   description="Scopri Progetto Nemesis, il techno-thriller di Cesare Scalise tra spionaggio, sabotaggi navali e intrighi internazionali. Disponibile su Amazon."
 >
 
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(bookSchema)}
+/>
+
 
   <!-- Hero banner (stesso stile di Blog/Gallerie, altezza dimezzata) -->
   <div class="bg-gray-950 text-white py-7 px-5">
