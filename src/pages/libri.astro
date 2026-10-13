@@ -58,6 +58,25 @@ function extractBooks(html: string): Book[] {
 }
 
 const books = page ? extractBooks(page.content.rendered) : [];
+
+
+const bookSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Book',
+  name: 'Progetto Nemesis',
+  author: {
+    '@type': 'Person',
+    name: 'Cesare Scalise',
+    url: 'https://www.cesarescalise.it/'
+  },
+  isbn: '9798178435212',
+  inLanguage: 'it',
+  genre: ['Techno-thriller', 'Spionaggio', 'Azione'],
+  url: 'https://www.cesarescalise.it/libri/',
+  description:
+    'Un techno-thriller di spionaggio e azione in cui una rete clandestina minaccia di prendere il controllo delle navi civili lungo le rotte commerciali mondiali.'
+};
+
 ---
 
 
