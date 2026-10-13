@@ -28,13 +28,36 @@ const socials = [
   { name: 'X',         url: 'https://x.com/cescali',                                icon: 'x' },
   { name: 'LinkedIn',  url: 'https://www.linkedin.com/in/cesare-scalise-0283858/',  icon: 'linkedin' },
 ];
+
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://www.cesarescalise.it/#person',
+  name: 'Cesare Scalise',
+  url: 'https://www.cesarescalise.it/',
+  description:
+    'Autore italiano del techno-thriller Progetto Nemesis, sviluppatore software e appassionato di fotografia.',
+  sameAs: socials.map(s => s.url),
+  knowsAbout: [
+    'Scrittura thriller',
+    'Techno-thriller',
+    'Sviluppo software',
+    'Fotografia'
+  ]
+};
+
 ---
 
-<BaseLayout title="Home">
+<BaseLayout
+  title="Sito ufficiale | Autore di Progetto Nemesis"
+  description="Il sito ufficiale di Cesare Scalise, autore del techno-thriller Progetto Nemesis. Scopri il romanzo, gli articoli del blog, le fotografie e i progetti."
+>
 
 <script
+  is:inline
   type="application/ld+json"
-  set:html={JSON.stringify(bookSchema)}
+  set:html={JSON.stringify(personSchema)}
 />
 
   <!-- Hero -->
@@ -46,7 +69,7 @@ const socials = [
         <span class="2xl:ml-4 text-indigo-600">Cesare Scalise</span>
       </h1>
       <p class="text-lg text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-        Scrivo del mio lavoro, delle mie passioni e condivido foto dei miei viaggi e avventure.
+        Informatico e autore di romanzi action thriller, scrivo del mio lavoro, delle mie passioni e condivido foto dei miei viaggi e delle mie avventure.
       </p>
       <div class="flex gap-4 justify-center flex-wrap">
         <a href="/blog"
