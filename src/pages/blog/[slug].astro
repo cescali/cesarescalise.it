@@ -10,6 +10,39 @@ if (!post) {
 }
 
 const image = getFeaturedImage(post);
+
+
+const articleUrl = new URL(Astro.url.pathname, Astro.site).href;
+
+const articleDescription = post.excerpt?.rendered
+  ?.replace(/<[^>]*>/g, '')
+  .trim()
+  .slice(0, 160) ?? '';
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': `${articleUrl}#article`,
+  headline: post.title.rendered.replace(/<[^>]*>/g, ''),
+  description: articleDescription,
+  url: articleUrl,
+  datePublished: post.date,
+  dateModified: post.modified || post.date,
+  inLanguage: 'it',
+  author: {
+    '@type': 'Person',
+    '@id': 'https://www.cesarescalise.it/#person',
+    name: 'Cesare Scalise',
+    url: 'https://www.cesarescalise.it/'
+  },
+  publisher: {
+    '@type': 'Person',
+    '@id': 'https://www.cesarescalise.it/#person',
+    name: 'Cesare Scalise'
+  },
+  ...(image ? { image: new URL(image, Astro.site).href } : {})
+};
+
 ---
 
 <BaseLayout
@@ -17,6 +50,15 @@ const image = getFeaturedImage(post);
   description={post.excerpt?.rendered?.replace(/<[^>]*>/g, '').trim().slice(0, 160)}
   image={image ?? undefined}
 >
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(articleSchema)}
+/><script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(articleSchema)}
+/>
 
   <!-- Hero: immagine in evidenza o barra dark -->
   {image ? (
