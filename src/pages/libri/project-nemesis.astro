@@ -46,20 +46,35 @@ const bookSchema = {
     </div>
   </div>
 
-  <article class="max-w-5xl xl:max-w-6xl mx-auto px-5 py-8 lg:py-10 flex flex-col lg:flex-row gap-8 lg:gap-12">
-    <div class="shrink-0 w-full max-w-xs lg:w-80 mx-auto lg:mx-0">
-      <img src={cover} alt="Project Nemesis by Cesare Scalise — English edition book cover" width="1024" height="1536" fetchpriority="high" class="rounded-lg shadow-lg w-full h-auto" />
-    </div>
-    <div class="min-w-0 lg:flex-1 space-y-5 text-base leading-relaxed">
-      <h2 class="font-display text-2xl sm:text-3xl font-bold">The enemy doesn’t need to sink a ship. Taking control is enough.</h2>
-      <p class="text-indigo-700 font-semibold">Spy · Action · Techno-Thriller</p>
-      <p>A high-stakes thriller of naval sabotage, intelligence, technology, and covert operations.</p>
-      <p>When a series of anomalies along major shipping routes reveals the existence of Nemesis, Cole Vance uncovers a clandestine network capable of infiltrating civilian ships’ navigation and control systems.</p>
-      <p>From Malacca to the Mediterranean, from Zurich to Gibraltar, a race against time to stop an invisible threat before it is too late.</p>
-      <p class="font-bold tracking-wide">THE ENEMY IS ALREADY ON BOARD.</p>
-      <p>Available on Amazon.com.</p>
-      <a href={amazonUrl} target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors shadow-md">Discover Project Nemesis on Amazon</a>
-      <p class="text-sm text-gray-600">Prefer Italian? <a href="/libri/" lang="it" class="text-indigo-600 hover:text-indigo-800 underline underline-offset-4">Scopri Progetto Nemesis in italiano</a></p>
-    </div>
-  </article>
+  <div class="max-w-5xl xl:max-w-6xl mx-auto px-5 py-6 lg:py-8 lg:h-[calc(100vh-320px)] lg:flex lg:flex-col">
+    <article class="flex flex-col lg:flex-row gap-6 lg:gap-10 lg:flex-1 lg:min-h-0 mb-10 lg:mb-0">
+      <div class="shrink-0 w-full sm:w-64 lg:w-72 xl:w-80 mx-auto lg:mx-0">
+        <img src={cover} alt="Project Nemesis by Cesare Scalise — English edition book cover" width="1024" height="1536" fetchpriority="high" class="rounded-lg shadow-lg object-contain w-full h-auto max-h-[45vh] lg:max-h-full mx-auto" />
+      </div>
+      <div class="libri-desc min-w-0 lg:flex-1 lg:overflow-y-auto lg:pr-2">
+        <h2 class="font-display text-2xl sm:text-3xl font-bold text-gray-900 mb-2">PROJECT NEMESIS</h2>
+        <p class="text-gray-600 italic text-sm sm:text-base mb-4">The enemy doesn’t need to sink a ship. Taking control is enough.</p>
+        <div class="wp-content text-sm sm:text-base leading-snug">
+          <p><strong>Spy · Action · Techno-Thriller</strong></p>
+          <p>A high-stakes thriller of naval sabotage, intelligence, technology, and covert operations.</p>
+          <p>When a series of anomalies along major shipping routes reveals the existence of Nemesis, Cole Vance uncovers a clandestine network capable of infiltrating civilian ships’ navigation and control systems.</p>
+          <p>From Malacca to the Mediterranean, from Zurich to Gibraltar, a race against time to stop an invisible threat before it is too late.</p>
+          <p><strong>THE ENEMY IS ALREADY ON BOARD.</strong></p>
+          <p>Available on Amazon.com.</p>
+        </div>
+        <a href={amazonUrl} target="_blank" rel="noopener noreferrer" class="inline-block mt-2 px-5 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors shadow-md">Discover Project Nemesis on Amazon</a>
+        <p class="mt-4 text-sm text-gray-600">Prefer Italian? <a href="/libri/" lang="it" class="text-indigo-600 hover:text-indigo-800 underline underline-offset-4">Scopri Progetto Nemesis in italiano</a></p>
+      </div>
+    </article>
+  </div>
 </BaseLayout>
+
+<style>
+  .libri-desc :global(p) {
+    margin-bottom: 0.6rem;
+  }
+  .libri-desc :global(.wp-content a) {
+    color: #4f46e5;
+    text-decoration: underline;
+  }
+</style>
