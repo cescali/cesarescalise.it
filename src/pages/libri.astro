@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { nemesisLanguageAlternates } from '../lib/bookEditions';
 import { getPage } from '../lib/wordpress';
 
 const page = await getPage('libri');
@@ -82,6 +83,7 @@ const bookSchema = {
 
 
 <BaseLayout
+  languageAlternates={nemesisLanguageAlternates}
   title="Progetto Nemesis | Romanzi thriller"
   description="Scopri Progetto Nemesis, il techno-thriller di Cesare Scalise tra spionaggio, sabotaggi navali e intrighi internazionali. Disponibile su Amazon."
 >

@@ -7,9 +7,10 @@ interface Props {
   description?: string;
   image?: string;
   lang?: 'it' | 'en';
+  languageAlternates?: { lang: string; path: string }[];
 }
 
-const { title, description = 'Il sito personale di Cesare Scalise — blog, gallerie e curriculum', image, lang = 'it' } = Astro.props;
+const { title, description = 'Il sito personale di Cesare Scalise — blog, gallerie e curriculum', image, lang = 'it', languageAlternates = [] } = Astro.props;
 const isEnglish = lang === 'en';
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -34,6 +35,9 @@ const currentPath = Astro.url.pathname;
     <title>{title} — Cesare Scalise</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    {languageAlternates.map(alternate => (
+      <link rel="alternate" hreflang={alternate.lang} href={new URL(alternate.path, Astro.site).href} />
+    ))}
 
     <meta property="og:title" content={`${title} — Cesare Scalise`} />
     <meta property="og:description" content={description} />

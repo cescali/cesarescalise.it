@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { nemesisLanguageAlternates } from '../../lib/bookEditions';
 
-const cover = '/images/books/project-nemesis.png';
+const cover = '/images/books/project-nemesis.webp';
 const amazonUrl = 'https://www.amazon.com/dp/B0HNSMMM7J';
 const bookSchema = {
   '@context': 'https://schema.org',
@@ -29,6 +30,7 @@ const bookSchema = {
 ---
 
 <BaseLayout
+  languageAlternates={nemesisLanguageAlternates}
   lang="en"
   title="Project Nemesis | An action thriller"
   description="Discover Project Nemesis, the English edition of Cesare Scalise’s techno-thriller of naval sabotage, espionage, and covert operations. Available on Amazon.com."

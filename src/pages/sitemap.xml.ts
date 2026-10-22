@@ -26,6 +26,7 @@ export const GET: APIRoute = async () => {
       '/blog/',
       '/gallerie/',
       '/libri/',
+      '/libri/project-nemesis/',
       '/cv/',
     ]);
 
