@@ -6,23 +6,25 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  lang?: 'it' | 'en';
 }
 
-const { title, description = 'Il sito personale di Cesare Scalise — blog, gallerie e curriculum', image } = Astro.props;
+const { title, description = 'Il sito personale di Cesare Scalise — blog, gallerie e curriculum', image, lang = 'it' } = Astro.props;
+const isEnglish = lang === 'en';
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const navLinks = [
   { href: '/blog',     label: 'Blog' },
-  { href: '/gallerie', label: 'Gallerie' },
-  { href: '/libri',    label: 'Libri' },
+  { href: '/gallerie', label: isEnglish ? 'Galleries' : 'Gallerie' },
+  { href: '/libri',    label: isEnglish ? 'Books' : 'Libri' },
   { href: '/cv',       label: 'CV' },
-  { href: 'https://meteo-piemonte.vercel.app', label: 'Meteo Piemonte', external: true },
+  { href: 'https://meteo-piemonte.vercel.app', label: isEnglish ? 'Piedmont Weather' : 'Meteo Piemonte', external: true },
 ];
 const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="it">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,7 +39,7 @@ const currentPath = Astro.url.pathname;
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL.href} />
-    <meta property="og:locale" content="it_IT" />
+    <meta property="og:locale" content={isEnglish ? 'en_US' : 'it_IT'} />
     <meta property="og:site_name" content="Cesare Scalise" />
     
     {image && (
@@ -90,7 +92,7 @@ const currentPath = Astro.url.pathname;
         <button
           id="menu-toggle"
           type="button"
-          aria-label="Apri menu"
+          aria-label={isEnglish ? 'Open menu' : 'Apri menu'}
           aria-expanded="false"
           class="sm:hidden p-2 -mr-2 text-gray-700"
         >

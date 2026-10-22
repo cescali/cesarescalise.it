@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const cover = '/images/books/project-nemesis.png';
+const amazonUrl = 'https://www.amazon.com/dp/B0HNSMMM7J';
+const bookSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Book',
+  name: 'Project Nemesis',
+  author: {
+    '@type': 'Person',
+    '@id': 'https://www.cesarescalise.it/#person',
+    name: 'Cesare Scalise',
+    url: 'https://www.cesarescalise.it/'
+  },
+  inLanguage: 'en',
+  genre: ['Techno-thriller', 'Espionage', 'Action'],
+  url: 'https://www.cesarescalise.it/libri/project-nemesis/',
+  image: 'https://www.cesarescalise.it' + cover,
+  sameAs: amazonUrl,
+  translationOfWork: {
+    '@type': 'Book',
+    name: 'Progetto Nemesis',
+    inLanguage: 'it',
+    url: 'https://www.cesarescalise.it/libri/'
+  },
+  description: 'A high-stakes thriller of naval sabotage, intelligence, technology, and covert operations.'
+};
+---
+
+<BaseLayout
+  lang="en"
+  title="Project Nemesis | An action thriller"
+  description="Discover Project Nemesis, the English edition of Cesare Scalise’s techno-thriller of naval sabotage, espionage, and covert operations. Available on Amazon.com."
+  image={cover}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(bookSchema)} />
+
+  <div class="bg-gray-950 text-white py-7 px-5">
+    <div class="max-w-6xl mx-auto">
+      <a href="/libri/" class="text-indigo-300 text-sm font-semibold hover:text-white">← All books</a>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold mt-3 mb-3">Project Nemesis</h1>
+      <p class="text-gray-400">The English edition of Progetto Nemesis</p>
+    </div>
+  </div>
+
+  <article class="max-w-5xl xl:max-w-6xl mx-auto px-5 py-8 lg:py-10 flex flex-col lg:flex-row gap-8 lg:gap-12">
+    <div class="shrink-0 w-full max-w-xs lg:w-80 mx-auto lg:mx-0">
+      <img src={cover} alt="Project Nemesis by Cesare Scalise — English edition book cover" width="1024" height="1536" fetchpriority="high" class="rounded-lg shadow-lg w-full h-auto" />
+    </div>
+    <div class="min-w-0 lg:flex-1 space-y-5 text-base leading-relaxed">
+      <h2 class="font-display text-2xl sm:text-3xl font-bold">The enemy doesn’t need to sink a ship. Taking control is enough.</h2>
+      <p class="text-indigo-700 font-semibold">Spy · Action · Techno-Thriller</p>
+      <p>A high-stakes thriller of naval sabotage, intelligence, technology, and covert operations.</p>
+      <p>When a series of anomalies along major shipping routes reveals the existence of Nemesis, Cole Vance uncovers a clandestine network capable of infiltrating civilian ships’ navigation and control systems.</p>
+      <p>From Malacca to the Mediterranean, from Zurich to Gibraltar, a race against time to stop an invisible threat before it is too late.</p>
+      <p class="font-bold tracking-wide">THE ENEMY IS ALREADY ON BOARD.</p>
+      <p>Available on Amazon.com.</p>
+      <a href={amazonUrl} target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors shadow-md">Discover Project Nemesis on Amazon</a>
+      <p class="text-sm text-gray-600">Prefer Italian? <a href="/libri/" lang="it" class="text-indigo-600 hover:text-indigo-800 underline underline-offset-4">Scopri Progetto Nemesis in italiano</a></p>
+    </div>
+  </article>
+</BaseLayout>
