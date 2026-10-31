@@ -1,0 +1,38 @@
+/* Una sola regola per tutti i pulsanti del sito. */
+.site-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  border: 1px solid #d7b66c;
+  background-color: #d7b66c;
+  color: #17140e;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.site-button.site-button--outline {
+  background-color: transparent;
+  color: rgb(var(--tone-text));
+  border-color: rgb(var(--tone-border));
+}
+.site-button:hover,
+.site-button:focus-visible,
+.carousel-controls .site-button:hover,
+.carousel-controls .site-button:focus-visible,
+.social-links .site-button:hover,
+.social-links .site-button:focus-visible {
+  background-color: #ebcc87;
+  border-color: #ebcc87;
+  color: #17140e;
+  box-shadow: 0 4px 16px rgba(0,0,0,.18);
+}
+.site-button:focus-visible { outline: 2px solid #ebcc87; outline-offset: 4px; }
+.social-links .site-button:is(:hover,:focus-visible) img { filter: invert(0); opacity: 1; }
+.site-button:disabled { opacity: .5; cursor: not-allowed; }
+:is(time,span).bg-brand-600 { background-color: #8f2c26; color: #fff; }
+@media (prefers-reduced-motion: reduce) { .site-button { transition: none; } }
+
+/* Il comando mobile resta nascosto quando la navigazione è completa. */
+@media (min-width: 640px) { #menu-toggle:not(.home-menu-toggle) { display: none; } }
+@media (min-width: 1024px) { #menu-toggle.home-menu-toggle { display: none; } }

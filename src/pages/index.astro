@@ -1,168 +1,97 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BookCarousel from '../components/BookCarousel.astro';
+import ArrowIcon from '../components/ArrowIcon.astro';
 import PostCard from '../components/PostCard.astro';
 import GalleryCard from '../components/GalleryCard.astro';
-import { getPosts } from '../lib/wordpress';
+import { getPosts, getPage, getFeaturedImage } from '../lib/wordpress';
 import { getFolders } from '../lib/cloudinary';
-import type { WPPost } from '../lib/wordpress';
-import type { CldFolder } from '../lib/cloudinary';
+import '../styles/home.css';
 
-let posts: WPPost[]    = [];
-let galleries: CldFolder[] = [];
-
-try {
-  [posts, galleries] = await Promise.all([getPosts(6), getFolders()]);
-} catch (err) {
-  console.error('[Home] data loading error:', err);
-  // tenta singolarmente
-  try { posts     = await getPosts(6);    } catch {}
-  try { galleries = await getFolders();   } catch {}
-}
-
-const latestGalleries = galleries.slice(0, 4);
-
-const socials = [
-  { name: 'Instagram', url: 'https://www.instagram.com/cesarescalise.it/',          icon: 'instagram' },
-  { name: 'Facebook',  url: 'https://www.facebook.com/cesare.scalise?locale=it_IT', icon: 'facebook' },
-  { name: 'Threads',   url: 'https://www.threads.com/@cesarescalise.it',            icon: 'threads' },
-  { name: 'X',         url: 'https://x.com/cescali',                                icon: 'x' },
-  { name: 'LinkedIn',  url: 'https://www.linkedin.com/in/cesare-scalise-0283858/',  icon: 'linkedin' },
+// Le fonti sono indipendenti: un servizio non disponibile non nasconde gli altri contenuti.
+const [postResult, galleryResult, bookResult] = await Promise.allSettled([
+  getPosts(3), getFolders(), getPage('libri'),
+]);
+const posts = postResult.status === 'fulfilled' ? postResult.value : [];
+const galleries = galleryResult.status === 'fulfilled' ? galleryResult.value.slice(0, 4) : [];
+const bookHtml = bookResult.status === 'fulfilled' ? bookResult.value?.content.rendered ?? '' : '';
+const italianCover = bookHtml.match(/<img\b[^>]*\bsrc="([^"]+)"/)?.[1]
+  ?? 'https://www.cesarescalise.it/wordpress/wp-content/uploads/2026/10/Progetto_Nemesis_Kindle_Cover-663x1024.jpg';
+const backdropPost = posts.find(post => post.slug.includes('una-nave-puo'));
+const backdrop = backdropPost ? getFeaturedImage(backdropPost) ?? '/images/books/project-nemesis.webp' : '/images/books/project-nemesis.webp';
+const englishBackdropPost = posts.find(post => post.slug.includes('cole-vance'));
+const englishBackdrop = englishBackdropPost ? getFeaturedImage(englishBackdropPost) ?? '/images/books/project-nemesis.webp' : '/images/books/project-nemesis.webp';
+const editions = [
+  { id: 'it', language: 'it', title: 'Progetto Nemesis', headline: 'Il nemico è già a bordo.', cover: italianCover, backdrop,
+    description: 'Una minaccia invisibile. Le rotte del mondo. Una corsa contro il tempo tra spionaggio, sabotaggi navali e operazioni clandestine.',
+    page: '/libri/', amazon: 'https://www.amazon.it/dp/B0HLXTBMK1', discover: 'Scopri il romanzo', buy: 'Acquista su Amazon' },
+  { id: 'en', language: 'en', title: 'Project Nemesis', headline: 'The enemy is already on board.', cover: '/images/books/project-nemesis.webp', backdrop: englishBackdrop,
+    description: 'An invisible threat. The world’s shipping routes. A race against time through espionage, naval sabotage, and covert operations.',
+    page: '/libri/project-nemesis/', amazon: 'https://www.amazon.com/dp/B0HNSMMM7J', discover: 'Discover the novel', buy: 'Buy on Amazon' },
 ];
-
-
+const socials = [
+  { name: 'Instagram', icon: 'instagram', url: 'https://www.instagram.com/cesarescalise.it/' },
+  { name: 'Facebook', icon: 'facebook', url: 'https://www.facebook.com/cesare.scalise?locale=it_IT' },
+  { name: 'Threads', icon: 'threads', url: 'https://www.threads.com/@cesarescalise.it' },
+  { name: 'X', icon: 'x', url: 'https://x.com/cescali' },
+  { name: 'LinkedIn', icon: 'linkedin', url: 'https://www.linkedin.com/in/cesare-scalise-0283858/' },
+];
 const personSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  '@id': 'https://www.cesarescalise.it/#person',
-  name: 'Cesare Scalise',
-  url: 'https://www.cesarescalise.it/',
-  description:
-    'Autore italiano del techno-thriller Progetto Nemesis, sviluppatore software e appassionato di fotografia.',
-  sameAs: socials.map(s => s.url),
-  knowsAbout: [
-    'Scrittura thriller',
-    'Techno-thriller',
-    'Sviluppo software',
-    'Fotografia'
-  ]
+  '@context': 'https://schema.org', '@type': 'Person', '@id': 'https://www.cesarescalise.it/#person',
+  name: 'Cesare Scalise', url: 'https://www.cesarescalise.it/',
+  description: 'Autore italiano del techno-thriller Progetto Nemesis, sviluppatore software e appassionato di fotografia.',
+  sameAs: socials.map(s => s.url), knowsAbout: ['Scrittura thriller', 'Techno-thriller', 'Sviluppo software', 'Fotografia'],
 };
-
 ---
+<BaseLayout home title="Sito ufficiale | Autore di Progetto Nemesis" description="Il sito ufficiale di Cesare Scalise, autore di Progetto Nemesis. Romanzi techno-thriller, tecnologia, articoli e fotografie di viaggio." image={italianCover}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+  <div class="author-home">
+    <BookCarousel editions={editions} />
 
-<BaseLayout
-  title="Sito ufficiale | Autore di Progetto Nemesis"
-  description="Il sito ufficiale di Cesare Scalise, autore del techno-thriller Progetto Nemesis. Scopri il romanzo, gli articoli del blog, le fotografie e i progetti."
->
-
-<script
-  is:inline
-  type="application/ld+json"
-  set:html={JSON.stringify(personSchema)}
-/>
-
-  <!-- Hero -->
-  <section class="bg-gradient-to-br from-indigo-50 via-white to-white pt-14 pb-[57px] px-5">
-    <div class="max-w-6xl mx-auto text-center">
-      <p class="text-indigo-600 font-semibold text-sm uppercase tracking-widest mb-5">Benvenuto nel mio spazio</p>
-      <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-gray-900">
-        Ciao, sono<br class="2xl:hidden"/>
-        <span class="2xl:ml-4 text-indigo-600">Cesare Scalise</span>
-      </h1>
-      <p class="text-lg text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-        Informatico e autore di romanzi action thriller, scrivo del mio lavoro, delle mie passioni e condivido foto dei miei viaggi e delle mie avventure.
-      </p>
-      <div class="flex gap-4 justify-center flex-wrap">
-        <a href="/blog"
-           class="px-7 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold transition-colors shadow-md">
-          Blog
-        </a>
-        <a href="/gallerie"
-           class="px-7 py-3 border-2 border-gray-300 hover:border-indigo-500 hover:text-indigo-600 text-gray-700 rounded-xl font-semibold transition-colors">
-          Gallerie foto
-        </a>
-        <a href="/libri"
-           class="px-7 py-3 border-2 border-gray-300 hover:border-indigo-500 hover:text-indigo-600 text-gray-700 rounded-xl font-semibold transition-colors">
-          Libri
-        </a>
-        <a href="/cv"
-           class="px-7 py-3 border-2 border-gray-300 hover:border-indigo-500 hover:text-indigo-600 text-gray-700 rounded-xl font-semibold transition-colors">
-          Il mio CV
-        </a>
-      </div>
-
-      <div class="flex gap-4 justify-center mt-10">
-        {socials.map(s => (
-          <a
-            href={s.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={s.name}
-            class="w-11 h-11 flex items-center justify-center rounded-full border-2 border-gray-200 hover:border-indigo-500 transition-colors"
-          >
-            <img src={`https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/${s.icon}.svg`} alt={s.name} class="w-5 h-5 opacity-60" loading="lazy" />
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- News -->
-  <section class="max-w-3xl mx-auto px-5 -mt-2 mb-10">
-    <div class="bg-indigo-50 border border-indigo-100 rounded-2xl px-6 py-5 text-center">
-      <p class="text-indigo-600 text-xs font-semibold uppercase tracking-widest mb-2">News</p>
-      <p class="text-gray-900 font-bold text-lg leading-snug">
-        Ho pubblicato il mio primo romanzo, PROGETTO NEMESIS.
-      </p>
-      <p class="text-gray-500 text-sm mt-1">
-        Un action thriller tra tecnologia, intelligence e sabotaggio navale.
-      </p>
-      <a href="/libri" class="inline-block mt-3 px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-colors">
-        Scopri il libro →
-      </a>
-    </div>
-  </section>
-
-  <!-- Ultimi articoli -->
-  <section class="max-w-6xl mx-auto px-5 pt-[51px] pb-16">
-    <div class="flex items-end justify-between mb-10">
-      <div>
-        <p class="text-indigo-600 text-sm font-semibold uppercase tracking-widest mb-1">Dal blog</p>
-        <h2 class="font-display text-3xl sm:text-4xl font-bold">Ultimi articoli</h2>
-      </div>
-      <a href="/blog" class="text-sm font-semibold text-gray-400 hover:text-indigo-600 transition-colors hidden sm:block">
-        Tutti gli articoli →
-      </a>
-    </div>
-    {posts.length === 0 ? (
-      <p class="text-gray-400">Nessun articolo trovato.</p>
-    ) : (
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
-        {posts.map(post => <PostCard post={post} />)}
-      </div>
-    )}
-    <div class="mt-8 sm:hidden">
-      <a href="/blog" class="text-sm font-semibold text-indigo-600">Tutti gli articoli →</a>
-    </div>
-  </section>
-
-  <!-- Gallerie -->
-  {latestGalleries.length > 0 && (
-    <section class="bg-gray-50 py-16 px-5">
-      <div class="max-w-6xl mx-auto">
-        <div class="flex items-end justify-between mb-10">
-          <div>
-            <p class="text-indigo-600 text-sm font-semibold uppercase tracking-widest mb-1">Fotografia</p>
-            <h2 class="font-display text-3xl sm:text-4xl font-bold">Gallerie</h2>
-          </div>
-          <a href="/gallerie" class="text-sm font-semibold text-gray-400 hover:text-indigo-600 transition-colors hidden sm:block">
-            Tutte le gallerie →
-          </a>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
-          {latestGalleries.map(g => <GalleryCard gallery={g} />)}
-        </div>
+    <section id="chi-sono" class="home-section introduction">
+      <div><p class="eyebrow">01 / Chi sono</p><h2>La curiosità è il<br /><em>filo che unisce.</em></h2></div>
+      <div class="introduction-copy">
+        <p class="intro-lead">Sono Cesare Scalise. Scrivo codice, immagino storie e porto a casa fotografie.</p>
+        <p>Il mio lavoro è l’informatica. Nei romanzi esploro il punto in cui tecnologia, spionaggio e azione si incontrano. Nei viaggi cerco luoghi e dettagli da raccontare attraverso le immagini.</p>
+        <p>Questo spazio raccoglie le mie passioni: i libri, gli appunti dal mondo della tecnologia e le fotografie delle mie avventure.</p>
       </div>
     </section>
-  )}
 
+    <section id="libri" class="home-section">
+      <div class="section-heading"><div><p class="eyebrow">02 / Libri</p><h2>Una storia.<br /><em>Due lingue.</em></h2></div><p>Spionaggio, tecnologia e azione.<br />Entra nel mondo di Nemesis.</p></div>
+      <div class="edition-grid">
+        {editions.map(edition => (
+          <article class="edition-card">
+            <a class="edition-cover" href={edition.page}><img src={edition.cover} alt={`Copertina di ${edition.title}`} width="663" height="1024" loading="lazy" /></a>
+            <div><p class="eyebrow">{edition.language === 'it' ? 'Edizione italiana' : 'English edition'}</p><h3>{edition.title}</h3><p class="edition-tagline" lang={edition.language}>{edition.headline}</p><p>Spy · Action · Techno-thriller</p><a class="text-link" href={edition.page}>{edition.language === 'it' ? 'Sinossi e dettagli' : 'Read the synopsis'} <ArrowIcon /></a><a class="edition-amazon" href={edition.amazon} target="_blank" rel="noopener noreferrer">{edition.buy} <ArrowIcon /></a></div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="blog" class="home-section">
+      <div class="section-heading"><div><p class="eyebrow">03 / Dal blog</p><h2>Tra le righe,<br /><em>oltre il codice.</em></h2></div><a class="text-link" href="/blog/">Tutti gli articoli <ArrowIcon /></a></div>
+      {posts.length > 0 ? <div class="home-posts">{posts.map(post => <PostCard post={post} />)}</div> : <p class="section-description">Gli articoli non sono disponibili in questo momento. <a class="text-link" href="/blog/">Vai al blog <ArrowIcon /></a></p>}
+    </section>
+
+    <section id="fotografia" class="home-section">
+      <div class="section-heading"><div><p class="eyebrow">04 / Fotografia</p><h2>Il mondo,<br /><em>nel mio obiettivo.</em></h2></div><a class="text-link" href="/gallerie/">Tutte le gallerie <ArrowIcon /></a></div>
+      <p class="section-description">Luoghi, viaggi e dettagli che meritano di essere ricordati. Un altro modo di raccontare storie.</p>
+      {galleries.length > 0 ? <div class="home-galleries">{galleries.map(gallery => <GalleryCard gallery={gallery} />)}</div> : <a class="photo-invitation" href="/gallerie/"><span>Appunti di viaggio, in immagini.</span><span class="text-link">Esplora le gallerie <ArrowIcon /></span></a>}
+    </section>
+
+    <section id="profilo" class="home-section professional-section">
+      <div><p class="eyebrow">05 / Profilo professionale</p><h2>La tecnologia,<br /><em>ogni giorno.</em></h2></div>
+      <div class="introduction-copy"><p class="intro-lead">Senior Software Developer &amp; Team Leader.</p><p>Oltre 25 anni di esperienza nello sviluppo software. Applicazioni enterprise, coordinamento di team e una curiosità costante per gli strumenti e le possibilità dell’intelligenza artificiale.</p><a class="action action-secondary site-button site-button--outline" href="/cv/">Leggi il curriculum <ArrowIcon /></a></div>
+    </section>
+
+    <section id="contatti" class="home-section contact-section">
+      <p class="eyebrow">06 / Restiamo in contatto</p><h2>Le storie continuano.<br /><em>Anche fuori da qui.</em></h2><p>Libri, tecnologia, fotografie e nuovi progetti: seguimi sui social.</p>
+      <div class="social-links">{socials.map(s => (
+        <a class="site-button site-button--outline" href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name}>
+          <img src={`https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/${s.icon}.svg`} alt="" width="20" height="20" loading="lazy" />
+        </a>
+      ))}</div>
+    </section>
+  </div>
 </BaseLayout>

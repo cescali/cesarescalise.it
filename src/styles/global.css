@@ -16,8 +16,8 @@
   .wp-content img         { @apply rounded-xl shadow-sm my-6; }
   .wp-content h2          { @apply text-2xl mt-8 mb-4 font-bold; }
   .wp-content h3          { @apply text-xl mt-6 mb-3 font-semibold; }
-  .wp-content a           { @apply text-indigo-600 hover:underline; }
-  .wp-content blockquote  { @apply border-l-4 border-indigo-300 pl-4 italic text-gray-600 my-6; }
+  .wp-content a           { @apply text-brand-600 hover:underline; }
+  .wp-content blockquote  { @apply border-l-4 border-brand-300 pl-4 italic text-gray-600 my-6; }
 
   /* line-clamp utility (compatibilità) */
   .line-clamp-3 {
@@ -26,4 +26,44 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+}
+
+:where(a, button, input):focus-visible {
+  outline: 2px solid rgb(var(--tone-accent));
+  outline-offset: 5px;
+}
+section[id] { scroll-margin-top: 6rem; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* La tipografia segue il tema, anche per i contenuti WordPress. */
+.wp-content {
+  --tw-prose-body: rgb(var(--tone-secondary));
+  --tw-prose-headings: rgb(var(--tone-text));
+  --tw-prose-lead: rgb(var(--tone-secondary));
+  --tw-prose-links: rgb(var(--tone-accent));
+  --tw-prose-bold: rgb(var(--tone-text));
+  --tw-prose-counters: rgb(var(--tone-secondary));
+  --tw-prose-bullets: rgb(var(--tone-muted));
+  --tw-prose-hr: rgb(var(--tone-line));
+  --tw-prose-quotes: rgb(var(--tone-text));
+  --tw-prose-quote-borders: rgb(var(--tone-line));
+  --tw-prose-captions: rgb(var(--tone-muted));
+  --tw-prose-code: rgb(var(--tone-text));
+  --tw-prose-pre-code: rgb(var(--tone-text));
+  --tw-prose-pre-bg: rgb(var(--tone-raised));
+  --tw-prose-th-borders: rgb(var(--tone-line));
+  --tw-prose-td-borders: rgb(var(--tone-line));
+  color: rgb(var(--tone-secondary));
+}
+.book-detail-card {
+  background: rgb(var(--tone-surface));
+  border: 1px solid rgb(var(--tone-line));
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 30px rgba(0,0,0,.12);
+}
+@media (max-width: 639px) {
+  .book-detail-card { padding: 1.25rem; }
 }

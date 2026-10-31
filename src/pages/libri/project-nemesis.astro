@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArrowIcon from '../../components/ArrowIcon.astro';
 import { nemesisLanguageAlternates } from '../../lib/bookEditions';
 
 const cover = '/images/books/project-nemesis.webp';
@@ -40,18 +41,18 @@ const bookSchema = {
 
   <div class="bg-gray-950 text-white py-7 px-5">
     <div class="max-w-6xl mx-auto">
-      <a href="/libri/" class="text-indigo-300 text-sm font-semibold hover:text-white">← All books</a>
+      <a href="/libri/" class="text-brand-300 text-sm font-semibold hover:text-white">← All books</a>
       <h1 class="font-display text-4xl sm:text-5xl font-bold mt-3 mb-3">Project Nemesis</h1>
       <p class="text-gray-400">The English edition of Progetto Nemesis</p>
     </div>
   </div>
 
-  <div class="max-w-5xl xl:max-w-6xl mx-auto px-5 py-6 lg:py-8 lg:h-[calc(100vh-320px)] lg:flex lg:flex-col">
-    <article class="flex flex-col lg:flex-row gap-6 lg:gap-10 lg:flex-1 lg:min-h-0 mb-10 lg:mb-0">
+  <div class="max-w-5xl xl:max-w-6xl mx-auto px-5 py-6 lg:py-8 lg:flex lg:flex-col">
+    <article class="book-detail-card flex flex-col lg:flex-row gap-6 lg:gap-10 lg:flex-1 lg:min-h-0 mb-10 lg:mb-0">
       <div class="shrink-0 w-full sm:w-64 lg:w-72 xl:w-80 mx-auto lg:mx-0">
         <img src={cover} alt="Project Nemesis by Cesare Scalise — English edition book cover" width="1024" height="1536" fetchpriority="high" class="rounded-lg shadow-lg object-contain w-full h-auto max-h-[45vh] lg:max-h-full mx-auto" />
       </div>
-      <div class="libri-desc min-w-0 lg:flex-1 lg:overflow-y-auto lg:pr-2">
+      <div class="libri-desc min-w-0 lg:flex-1 lg:pr-2">
         <h2 class="font-display text-2xl sm:text-3xl font-bold text-gray-900 mb-2">PROJECT NEMESIS</h2>
         <p class="text-gray-600 italic text-sm sm:text-base mb-4">The enemy doesn’t need to sink a ship. Taking control is enough.</p>
         <div class="wp-content text-sm sm:text-base leading-snug">
@@ -62,8 +63,8 @@ const bookSchema = {
           <p><strong>THE ENEMY IS ALREADY ON BOARD.</strong></p>
           <p>Available on Amazon.com.</p>
         </div>
-        <a href={amazonUrl} target="_blank" rel="noopener noreferrer" class="inline-block mt-2 px-5 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors shadow-md">Discover Project Nemesis on Amazon</a>
-        <p class="mt-4 text-sm text-gray-600">Prefer Italian? <a href="/libri/" lang="it" class="text-indigo-600 hover:text-indigo-800 underline underline-offset-4">Scopri Progetto Nemesis in italiano</a></p>
+        <a href={amazonUrl} target="_blank" rel="noopener noreferrer" class="inline-flex mt-2 px-5 py-2 text-sm site-button rounded-lg font-semibold transition-colors shadow-md">Discover Project Nemesis on Amazon <ArrowIcon /></a>
+        <p class="mt-4 text-sm text-gray-600">Prefer Italian? <a href="/libri/" lang="it" class="text-brand-600 hover:text-brand-800 underline underline-offset-4">Scopri Progetto Nemesis in italiano</a></p>
       </div>
     </article>
   </div>
@@ -74,7 +75,7 @@ const bookSchema = {
     margin-bottom: 0.6rem;
   }
   .libri-desc :global(.wp-content a) {
-    color: #4f46e5;
+    color: rgb(var(--tone-accent));
     text-decoration: underline;
   }
 </style>

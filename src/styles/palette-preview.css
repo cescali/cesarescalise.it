@@ -1,0 +1,84 @@
+:root {
+  --tone-page: 48 37 31;
+  --tone-surface: 60 48 40;
+  --tone-accent: 239 179 94;
+  --tone-tint: 59 48 37;
+  --tone-tint-strong: 74 58 45;
+  --tone-accent-border: 121 82 42;
+  --tone-accent-soft: 247 196 134;
+  --tone-accent-mid: 217 145 63;
+  --tone-accent-secondary: 237 160 71;
+  --tone-accent-hover: 255 193 113;
+  --tone-accent-deep: 235 160 69;
+  --tone-deep: 37 28 19;
+  --tone-raised: 72 57 46;
+  --tone-line: 101 80 64;
+  --tone-border: 141 117 96;
+  --tone-muted-weak: 184 161 139;
+  --tone-muted: 202 182 161;
+  --tone-secondary: 217 200 181;
+  --tone-light: 231 217 201;
+  --tone-lighter: 239 227 213;
+  --tone-text: 245 235 221;
+  --tone-contrast-bg: 38 29 24;
+  --tone-on-accent: 48 37 31;
+  --social-filter: 1;
+}
+
+:root[data-preview-palette='medium'] {
+  --tone-page: 156 156 152; --tone-surface: 231 231 226;
+  --tone-text: 27 29 27; --tone-secondary: 42 45 42;
+  --tone-muted: 52 55 52; --tone-muted-weak: 60 63 60;
+  --tone-light: 35 38 35; --tone-lighter: 30 33 30;
+  --tone-line: 115 117 112; --tone-border: 75 79 74;
+  --tone-raised: 215 216 208; --tone-deep: 137 138 132; --tone-contrast-bg: 137 138 132;
+  --tone-tint: 231 231 226; --tone-tint-strong: 215 216 208;
+  --tone-accent: 32 36 32; --tone-accent-hover: 14 18 14;
+  --tone-accent-soft: 48 53 48; --tone-accent-border: 85 91 85;
+  --tone-accent-mid: 57 62 57; --tone-accent-secondary: 32 36 32; --tone-accent-deep: 32 36 32;
+  --tone-on-accent: 250 250 246; --social-filter: 0;
+}
+:root[data-preview-palette='dark'] {
+  --tone-page: 8 9 10; --tone-surface: 241 240 236;
+  --tone-text: 245 245 242; --tone-secondary: 191 195 201;
+  --tone-muted: 178 184 191; --tone-muted-weak: 163 170 179;
+  --tone-light: 221 224 228; --tone-lighter: 235 236 238;
+  --tone-line: 59 62 66; --tone-border: 132 139 148;
+  --tone-raised: 28 30 33; --tone-deep: 5 6 7; --tone-contrast-bg: 5 6 7;
+  --tone-tint: 28 30 33; --tone-tint-strong: 38 40 44;
+  --tone-accent: 226 81 70; --tone-accent-hover: 250 116 104;
+  --tone-accent-soft: 244 124 114; --tone-accent-border: 134 56 51;
+  --tone-accent-mid: 218 75 65; --tone-accent-secondary: 226 81 70; --tone-accent-deep: 226 81 70;
+  --tone-on-accent: 8 9 10; --social-filter: 1;
+}:root[data-preview-palette='medium'] .bg-gray-950.text-white { color: rgb(var(--tone-text)); }
+:root[data-preview-palette='dark'] :is(.edition-card, .home-posts > article, .photo-invitation, .book-detail-card) {
+  --tone-text: 27 29 27; --tone-secondary: 50 53 50;
+  --tone-muted: 62 65 62; --tone-muted-weak: 68 71 68;
+  --tone-light: 35 38 35; --tone-lighter: 30 33 30;
+  --tone-accent: 155 33 28; --tone-accent-hover: 123 22 19;
+  --tone-on-accent: 250 250 246;
+  --accent: rgb(var(--tone-accent));
+  --muted: rgb(var(--tone-secondary));
+  color: rgb(var(--tone-text));
+}
+:root[data-preview-palette='dark'] .photo-invitation { background: rgb(var(--tone-surface)); }
+:root[data-preview-palette='dark'] .hero-backdrop.is-active { opacity: .96; }
+:root[data-preview-palette='dark'] .hero-shade {
+  background: linear-gradient(90deg,rgba(8,9,10,.98) 0%,rgba(8,9,10,.78) 38%,rgba(8,9,10,.08) 100%),linear-gradient(0deg,#08090a 0%,transparent 45%);
+}
+@media (max-width: 639px) {
+  :root[data-preview-palette='dark'] .hero-shade { background: linear-gradient(90deg,rgba(8,9,10,.94),rgba(8,9,10,.72)),linear-gradient(0deg,#08090a,transparent); }
+}
+:root[data-preview-palette='dark'] {
+  --tone-button: 240 240 236;
+  --tone-button-hover: 255 255 255;
+  --tone-button-text: 23 25 27;
+}
+
+:root[data-preview-palette='dark'] .book-detail-card {
+  --tone-button: 27 29 27;
+  --tone-button-hover: 48 51 48;
+  --tone-button-text: 250 250 246;
+  --tone-line: 210 211 204;
+  --tone-border: 122 126 119;
+}

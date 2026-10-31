@@ -1,0 +1,130 @@
+---
+import ArrowIcon from './ArrowIcon.astro';
+interface Edition {
+  id: string;
+  language: string;
+  title: string;
+  headline: string;
+  description: string;
+  cover: string;
+  backdrop: string;
+  page: string;
+  amazon: string;
+  discover: string;
+  buy: string;
+}
+interface Props { editions: Edition[]; }
+const { editions } = Astro.props;
+---
+<section class="novel-carousel" aria-roledescription="carosello" aria-label="Progetto Nemesis: edizioni italiana e inglese" data-novel-carousel>
+  {editions.map((edition, index) => (
+    <img class:list={["hero-backdrop", { "is-active": index === 0 }]} data-backdrop src={edition.backdrop} alt="" aria-hidden="true" loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} />
+  ))}
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <p class="hero-byline">Cesare Scalise <span aria-hidden="true">/</span> Storie, tecnologia e altri mondi</p>
+    <div class="slides">
+      {editions.map((edition, index) => (
+        <article id={`slide-${edition.id}`} class="novel-slide" lang={edition.language} hidden={index !== 0} inert={index !== 0} aria-hidden={index !== 0} data-slide aria-label={`${index + 1} di ${editions.length}: ${edition.title}`} aria-roledescription="diapositiva">
+          <div class="hero-copy">
+            <p class="eyebrow">{index === 0 ? 'Il romanzo · Edizione italiana' : 'The novel · English edition'}</p>
+            {index === 0 ? <h1>Il nemico è già <em>a bordo.</em></h1> : <h2>The enemy is <em>already on board.</em></h2>}
+            <p class="hero-title">{edition.title}</p>
+            <p class="hero-description">{edition.description}</p>
+            <div class="hero-actions">
+              <a class="action action-primary site-button" href={edition.page}>{edition.discover}<ArrowIcon /></a>
+              <a class="action action-secondary site-button site-button--outline" href={edition.amazon} target="_blank" rel="noopener noreferrer">{edition.buy}<ArrowIcon /></a>
+            </div>
+            <p class="hero-genre">Spy <span>·</span> Action <span>·</span> Techno-thriller</p>
+          </div>
+          <a class="hero-book" href={edition.page} aria-label={index === 0 ? 'Scopri Progetto Nemesis, edizione italiana' : 'Discover Project Nemesis, English edition'}>
+            <div class="book-halo" aria-hidden="true"></div>
+            <img src={edition.cover} alt={`Copertina di ${edition.title} di Cesare Scalise`} width="663" height="1024" loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} />
+            <span>{index === 0 ? 'La tua prossima missione comincia qui.' : 'Your next mission starts here.'}</span>
+          </a>
+        </article>
+      ))}
+    </div>
+    <div class="carousel-bar">
+      <a class="scroll-invitation" href="#chi-sono">Esplora il mio mondo <span aria-hidden="true">↓</span></a>
+      <div class="carousel-controls">
+        <button class="site-button site-button--outline" type="button" data-previous aria-label="Edizione precedente">←</button>
+        <div class="edition-selectors" aria-label="Scegli l’edizione">
+          {editions.map((edition, index) => <button class="site-button site-button--outline" type="button" data-select={index} aria-controls={`slide-${edition.id}`} aria-label={`Mostra ${edition.title}, ${edition.language === 'it' ? 'edizione italiana' : 'English edition'}`} aria-pressed={index === 0}>{edition.language === 'it' ? '01 / IT' : '02 / EN'}</button>)}
+        </div>
+        <button class="site-button site-button--outline" type="button" data-next aria-label="Edizione successiva">→</button>
+        <button class="site-button site-button--outline" type="button" data-pause aria-label="Metti in pausa il carosello" aria-pressed="false">Pausa</button>
+      </div>
+    </div>
+    <p class="sr-only" aria-live="polite" data-carousel-status></p>
+  </div>
+</section>
+
+<script>
+  const carousel = document.querySelector<HTMLElement>('[data-novel-carousel]');
+  if (carousel) {
+    const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-slide]'));
+    const backdrops = Array.from(carousel.querySelectorAll<HTMLElement>('[data-backdrop]'));
+    const selectors = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-select]'));
+    const pauseButton = carousel.querySelector<HTMLButtonElement>('[data-pause]');
+    const status = carousel.querySelector<HTMLElement>('[data-carousel-status]');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // Riserva lo stesso spazio ai testi delle due lingue, anche quando
+    // cambia la larghezza della finestra o terminano di caricarsi i font.
+    function alignTextRows() {
+      const rows = [
+        ['.hero-copy h1, .hero-copy h2', '--hero-headline-height'],
+        ['.hero-copy .eyebrow', '--hero-eyebrow-height'],
+        ['.hero-title', '--hero-title-height'],
+        ['.hero-description', '--hero-description-height'],
+      ];
+      rows.forEach(([selector, variable]) => {
+        const elements = Array.from(carousel!.querySelectorAll<HTMLElement>(selector));
+        elements.forEach(element => { element.style.minHeight = '0px'; });
+        const height = Math.max(...elements.map(element => Math.ceil(element.getBoundingClientRect().height)));
+        carousel!.style.setProperty(variable, `${height}px`);
+        elements.forEach(element => { element.style.removeProperty('min-height'); });
+      });
+    }
+    let measuredWidth = 0;
+    new ResizeObserver(([entry]) => {
+      if (entry.contentRect.width !== measuredWidth) {
+        measuredWidth = entry.contentRect.width;
+        alignTextRows();
+      }
+    }).observe(carousel);
+    document.fonts.ready.then(alignTextRows);
+    let current = 0;
+    let paused = reducedMotion.matches;
+    function updatePause() {
+      pauseButton?.setAttribute('aria-pressed', String(paused));
+      pauseButton?.setAttribute('aria-label', paused ? 'Avvia il carosello' : 'Metti in pausa il carosello');
+      if (pauseButton) pauseButton.textContent = paused ? 'Riprendi' : 'Pausa';
+    }
+    function showSlide(index: number, manual = false) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => { slide.hidden = i !== current; slide.inert = i !== current; slide.setAttribute('aria-hidden', String(i !== current)); });
+      backdrops.forEach((backdrop, i) => backdrop.classList.toggle('is-active', i === current));
+      selectors.forEach((button, i) => button.setAttribute('aria-pressed', String(i === current)));
+      if (manual) {
+        paused = true;
+        updatePause();
+        if (status) status.textContent = slides[current].getAttribute('aria-label') ?? '';
+      }
+    }
+    carousel.querySelector('[data-next]')?.addEventListener('click', () => showSlide(current + 1, true));
+    carousel.querySelector('[data-previous]')?.addEventListener('click', () => showSlide(current - 1, true));
+    selectors.forEach((button, index) => button.addEventListener('click', () => showSlide(index, true)));
+    pauseButton?.addEventListener('click', () => { paused = !paused; updatePause(); });
+    carousel.addEventListener('keydown', (event) => {
+      if (!(event.target instanceof Element) || !event.target.closest('.carousel-controls')) return;
+      if (event.key === 'ArrowRight') { event.preventDefault(); showSlide(current + 1, true); }
+      if (event.key === 'ArrowLeft') { event.preventDefault(); showSlide(current - 1, true); }
+    });
+    reducedMotion.addEventListener('change', () => { if (reducedMotion.matches) { paused = true; updatePause(); } });
+    updatePause();
+    window.setInterval(() => {
+      if (!paused && !document.hidden && !carousel.matches(':hover') && !carousel.contains(document.activeElement)) showSlide(current + 1);
+    }, 9000);
+  }
+</script>

@@ -1,20 +1,33 @@
 ---
 import '../styles/global.css';
+import '../styles/palette-preview.css';
+import '../styles/buttons.css';
 import Analytics from '@vercel/analytics/astro';
+import PalettePreview from '../components/PalettePreview.astro';
+import ArrowIcon from '../components/ArrowIcon.astro';
 
 interface Props {
   title: string;
   description?: string;
   image?: string;
+  home?: boolean;
   lang?: 'it' | 'en';
   languageAlternates?: { lang: string; path: string }[];
 }
 
-const { title, description = 'Il sito personale di Cesare Scalise — blog, gallerie e curriculum', image, lang = 'it', languageAlternates = [] } = Astro.props;
+const { title, description = 'Il sito personale di Cesare Scalise — blog, gallerie e curriculum', image, lang = 'it', languageAlternates = [], home = false } = Astro.props;
 const isEnglish = lang === 'en';
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const navLinks = [
+const navLinks: { href: string; label: string; external?: boolean }[] = home ? [
+  { href: '#chi-sono', label: 'Chi sono' },
+  { href: '#libri', label: 'Libri' },
+  { href: '#blog', label: 'Blog' },
+  { href: '#fotografia', label: 'Fotografia' },
+  { href: '#profilo', label: 'Profilo' },
+  { href: '#contatti', label: 'Contatti' },
+  { href: 'https://meteo-piemonte.vercel.app', label: 'Meteo Piemonte', external: true },
+] : [
   { href: '/blog',     label: 'Blog' },
   { href: '/gallerie', label: isEnglish ? 'Galleries' : 'Gallerie' },
   { href: '/libri',    label: isEnglish ? 'Books' : 'Libri' },
@@ -25,7 +38,7 @@ const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-preview-palette="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -57,6 +70,14 @@ const currentPath = Astro.url.pathname;
       <meta name="twitter:image" content={new URL(image, Astro.site).href} />
     )}
 
+    {import.meta.env.DEV && (
+      <script is:inline>
+        try {
+          const choice = sessionStorage.getItem('cesare-preview-palette');
+          document.documentElement.dataset.previewPalette = ['medium', 'dark'].includes(choice) ? choice : 'dark';
+        } catch { document.documentElement.dataset.previewPalette = 'dark'; }
+      </script>
+    )}
     <!-- Google Fonts: Inter (body) + Playfair Display (headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -65,15 +86,15 @@ const currentPath = Astro.url.pathname;
     <!-- GLightbox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
   </head>
-  <body class="bg-white text-gray-900 antialiased font-sans">
+  <body class="bg-canvas text-gray-900 antialiased font-sans">
 
     <!-- Navbar -->
-    <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <header class:list={["sticky top-0 z-50 bg-canvas border-b border-gray-200 shadow-sm", { "author-header": home }]}>
       <nav class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
-        <a href="/" class="font-display text-xl font-bold text-gray-900 hover:text-indigo-600 transition-colors tracking-wide">
+        <a href="/" class="font-display text-xl font-bold text-gray-900 hover:text-brand-600 transition-colors tracking-wide">
           Cesare Scalise
         </a>
-        <ul class="hidden sm:flex gap-8 text-sm font-medium">
+        <ul class:list={[home ? "hidden lg:flex" : "hidden sm:flex", "gap-8 text-sm font-medium"]}>
           {navLinks.map(link => (
             <li>
               <a
@@ -82,11 +103,11 @@ const currentPath = Astro.url.pathname;
                 rel={link.external ? 'noopener noreferrer' : undefined}
                 class={`transition-colors pb-0.5 ${
                   !link.external && currentPath.startsWith(link.href)
-                    ? 'text-indigo-600 border-b-2 border-indigo-600'
-                    : 'text-gray-600 hover:text-indigo-600'
+                    ? 'text-brand-600 border-b-2 border-brand-600'
+                    : 'text-gray-600 hover:text-brand-600'
                 }`}
               >
-                {link.label}{link.external && ' ↗'}
+                {link.label}{link.external && <> <ArrowIcon /></>}
               </a>
             </li>
           ))}
@@ -98,7 +119,7 @@ const currentPath = Astro.url.pathname;
           type="button"
           aria-label={isEnglish ? 'Open menu' : 'Apri menu'}
           aria-expanded="false"
-          class="sm:hidden p-2 -mr-2 text-gray-700"
+          class:list={[home ? "lg:hidden home-menu-toggle" : "sm:hidden", "site-button site-button--outline p-2 -mr-2 text-gray-700"]}
         >
           <svg id="icon-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -110,7 +131,7 @@ const currentPath = Astro.url.pathname;
       </nav>
 
       <!-- Menu mobile a tendina -->
-      <ul id="mobile-menu" class="hidden sm:hidden flex-col px-5 pb-4 text-sm font-medium border-t border-gray-200">
+      <ul id="mobile-menu" class:list={["hidden flex-col px-5 pb-4 text-sm font-medium border-t border-gray-200", home ? "lg:hidden" : "sm:hidden"]}>
         {navLinks.map(link => (
           <li>
             <a
@@ -119,11 +140,11 @@ const currentPath = Astro.url.pathname;
               rel={link.external ? 'noopener noreferrer' : undefined}
               class={`block py-3 ${
                 !link.external && currentPath.startsWith(link.href)
-                  ? 'text-indigo-600 font-semibold'
+                  ? 'text-brand-600 font-semibold'
                   : 'text-gray-600'
               }`}
             >
-              {link.label}{link.external && ' ↗'}
+              {link.label}{link.external && <> <ArrowIcon /></>}
             </a>
           </li>
         ))}
@@ -135,6 +156,15 @@ const currentPath = Astro.url.pathname;
       const menu = document.getElementById('mobile-menu');
       const iconOpen = document.getElementById('icon-open');
       const iconClose = document.getElementById('icon-close');
+
+      menu?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.add('hidden');
+          iconOpen?.classList.remove('hidden');
+          iconClose?.classList.add('hidden');
+          toggle?.setAttribute('aria-expanded', 'false');
+        });
+      });
 
       toggle?.addEventListener('click', () => {
         const isOpen = !menu?.classList.contains('hidden');
@@ -149,18 +179,18 @@ const currentPath = Astro.url.pathname;
       <slot />
     </main>
 
-    <footer class="bg-gray-50 border-t border-gray-200 text-gray-500 mt-20">
+    <footer class:list={["bg-canvas border-t border-gray-200 text-gray-500", home ? "mt-0" : "mt-20"]}>
       <div class="max-w-6xl mx-auto px-5 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
         <span class="font-display text-gray-900 font-bold text-lg">Cesare Scalise</span>
-        <nav class="flex gap-6 text-sm">
+        <nav class="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm">
           {navLinks.map(link => (
             <a
               href={link.href}
               target={link.external ? '_blank' : undefined}
               rel={link.external ? 'noopener noreferrer' : undefined}
-              class="hover:text-indigo-600 transition-colors"
+              class="hover:text-brand-600 transition-colors"
             >
-              {link.label}{link.external && ' ↗'}
+              {link.label}{link.external && <> <ArrowIcon /></>}
             </a>
           ))}
         </nav>
@@ -169,6 +199,7 @@ const currentPath = Astro.url.pathname;
     </footer>
 	
 	<Analytics />
+    {import.meta.env.DEV && <PalettePreview />}
 
   </body>
 </html>

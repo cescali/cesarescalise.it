@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ArrowIcon from '../components/ArrowIcon.astro';
 import { nemesisLanguageAlternates } from '../lib/bookEditions';
 import { getPage } from '../lib/wordpress';
 
@@ -98,17 +99,17 @@ const bookSchema = {
   <!-- Hero banner (stesso stile di Blog/Gallerie, altezza dimezzata) -->
   <div class="bg-gray-950 text-white py-7 px-5">
     <div class="max-w-6xl mx-auto">
-      <p class="text-indigo-500 text-sm font-semibold uppercase tracking-widest mb-3">Scrittura</p>
+      <p class="text-brand-300 text-sm font-semibold uppercase tracking-widest mb-3">Scrittura</p>
       <h1 class="font-display text-4xl sm:text-5xl font-bold mb-3">Libri</h1>
       <p class="text-gray-400">I miei romanzi e scritti.</p>
     </div>
   </div>
 
-  <div class="max-w-5xl xl:max-w-6xl mx-auto px-5 py-6 lg:py-8 lg:h-[calc(100vh-320px)] lg:flex lg:flex-col">
+  <div class="max-w-5xl xl:max-w-6xl mx-auto px-5 py-6 lg:py-8 lg:flex lg:flex-col">
 
     {books.length > 0 ? (
       books.map(book => (
-        <article class="flex flex-col lg:flex-row gap-6 lg:gap-10 lg:flex-1 lg:min-h-0 mb-10 lg:mb-0">
+        <article class="book-detail-card flex flex-col lg:flex-row gap-6 lg:gap-10 lg:flex-1 lg:min-h-0 mb-10 lg:mb-0">
           <div class="shrink-0 w-full sm:w-64 lg:w-72 xl:w-80 mx-auto lg:mx-0">
             <img
               src={book.coverSrc}
@@ -116,7 +117,7 @@ const bookSchema = {
               class="rounded-lg shadow-lg object-contain w-full h-auto max-h-[45vh] lg:max-h-full mx-auto"
             />
           </div>
-          <div class="libri-desc min-w-0 lg:flex-1 lg:overflow-y-auto lg:pr-2">
+          <div class="libri-desc min-w-0 lg:flex-1 lg:pr-2">
             <h2 class="font-display text-2xl sm:text-3xl font-bold text-gray-900 mb-2" set:html={book.titleHtml} />
             <p class="text-gray-600 italic text-sm sm:text-base mb-4" set:html={book.taglineHtml} />
             <div class="wp-content text-sm sm:text-base leading-snug" set:html={book.descriptionHtml} />
@@ -125,13 +126,13 @@ const bookSchema = {
                 href={book.linkUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-block mt-2 px-5 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors shadow-md"
+                class="inline-flex mt-2 px-5 py-2 text-sm site-button rounded-lg font-semibold transition-colors shadow-md"
               >
-                {book.linkText}
+                {book.linkText} <ArrowIcon />
               </a>
             )}
             {/progetto\s+nemesis/i.test(book.titleHtml) && (
-              <p class="mt-4 text-sm text-gray-600">Preferisci l’inglese? <a href="/libri/project-nemesis/" lang="en" class="text-indigo-600 hover:text-indigo-800 underline underline-offset-4">Discover Project Nemesis in English</a></p>
+              <p class="mt-4 text-sm text-gray-600">Preferisci l’inglese? <a href="/libri/project-nemesis/" lang="en" class="text-brand-600 hover:text-brand-800 underline underline-offset-4">Discover Project Nemesis in English</a></p>
             )}
           </div>
         </article>
@@ -148,7 +149,7 @@ const bookSchema = {
     margin-bottom: 0.6rem;
   }
   .libri-desc :global(.wp-content a) {
-    color: #4f46e5;
+    color: rgb(var(--tone-accent));
     text-decoration: underline;
   }
 </style>
