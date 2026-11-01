@@ -140,3 +140,23 @@
 .professional-section h2 { font-size: clamp(2rem, 3.6vw, 3rem); }
 .contact-section { padding-top: 4rem; padding-bottom: 4rem; }
 
+
+/* Copertina cartacea e lettore: stessi ingombri per le due edizioni. */
+.hero-book { width: 100%; }
+.book-format-scene { position: relative; width: min(42vw, 560px); height: min(672px, 76.8svh); max-height: 720px; isolation: isolate; }
+.paperback-mockup { position: absolute; left: 2%; top: 0; width: 76%; height: 100%; display: flex; align-items: center; transform: perspective(1200px) rotateY(-9deg) rotateZ(-3deg); filter: drop-shadow(16px 24px 20px rgba(0,0,0,.6)); }
+.hero-book .paperback-mockup img { width: 100%; height: auto; max-height: 100%; object-fit: contain; filter: none; border-radius: 2px 5px 5px 2px; box-shadow: 5px 1px 0 #d7d2c7, 9px 2px 0 #a39f96; }
+
+.reader-mockup { position: absolute; right: 0; bottom: 1%; width: 42%; padding: 12px 10px 24px; background: linear-gradient(120deg,#36383a,#141516 70%); border: 1px solid #66686a; border-radius: 16px; transform: rotate(5deg); box-shadow: 0 22px 30px rgba(0,0,0,.6), inset 0 0 0 3px #242628; z-index: 2; }
+.reader-screen { background: #e1e0d8; border: 2px solid #090a0b; overflow: hidden; border-radius: 3px; }
+.hero-book .reader-screen img { position: static; width: 100%; height: auto; max-height: none; filter: saturate(.18) contrast(.95); object-fit: contain; }
+.reader-home { width: 20px; height: 3px; border-radius: 3px; background: #66686a; margin: 12px auto -12px; }
+@media (max-width: 1023px) and (min-width: 640px) {
+  .book-format-scene { width: 38vw; height: 492px; max-height: 65svh; }
+  .reader-mockup { padding: 9px 7px 20px; border-radius: 12px; }
+}
+@media (max-width: 639px) {
+  .book-format-scene { width: min(85vw, 370px); height: 390px; max-height: none; }
+  .reader-mockup { padding: 9px 7px 20px; border-radius: 12px; }
+  .hero-book > span { padding-top: 1.2rem; }
+}

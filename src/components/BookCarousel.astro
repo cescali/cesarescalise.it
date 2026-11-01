@@ -39,7 +39,15 @@ const { editions } = Astro.props;
           </div>
           <a class="hero-book" href={edition.page} aria-label={index === 0 ? 'Scopri Progetto Nemesis, edizione italiana' : 'Discover Project Nemesis, English edition'}>
             <div class="book-halo" aria-hidden="true"></div>
-            <img src={edition.cover} alt={`Copertina di ${edition.title} di Cesare Scalise`} width="663" height="1024" loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} />
+            <div class="book-format-scene">
+              <div class="paperback-mockup">
+                <img src={edition.cover} alt={`Copertina di ${edition.title} di Cesare Scalise`} width="663" height="1024" loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} />
+              </div>
+              <div class="reader-mockup" aria-hidden="true">
+                <div class="reader-screen"><img src={edition.cover} alt="" width="663" height="1024" loading={index === 0 ? 'eager' : 'lazy'} /></div>
+                <div class="reader-home"></div>
+              </div>
+            </div>
             <span>{index === 0 ? 'La tua prossima missione comincia qui.' : 'Your next mission starts here.'}</span>
           </a>
         </article>
