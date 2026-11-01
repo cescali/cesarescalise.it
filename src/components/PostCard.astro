@@ -10,7 +10,7 @@ const image   = getFeaturedImage(post);
 const excerpt = stripHtml(post.excerpt.rendered).slice(0, 120);
 ---
 
-<article class="group flex flex-col rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-paper">
+<article class="post-card group flex flex-col rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-paper">
   <a href={`/blog/${post.slug}`} class="block overflow-hidden">
     {image ? (
       <div class="relative aspect-[3/2] overflow-hidden bg-gray-100">

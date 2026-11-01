@@ -51,7 +51,7 @@
   --tone-accent-mid: 218 75 65; --tone-accent-secondary: 226 81 70; --tone-accent-deep: 226 81 70;
   --tone-on-accent: 8 9 10; --social-filter: 1;
 }:root[data-preview-palette='medium'] .bg-gray-950.text-white { color: rgb(var(--tone-text)); }
-:root[data-preview-palette='dark'] :is(.edition-card, .home-posts > article, .photo-invitation, .book-detail-card) {
+:root[data-preview-palette='dark'] :is(.edition-card, .post-card, .photo-invitation, .book-detail-card) {
   --tone-text: 27 29 27; --tone-secondary: 50 53 50;
   --tone-muted: 62 65 62; --tone-muted-weak: 68 71 68;
   --tone-light: 35 38 35; --tone-lighter: 30 33 30;
