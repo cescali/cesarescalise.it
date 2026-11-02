@@ -2,9 +2,10 @@
 import type { CldFolder } from '../lib/cloudinary';
 
 interface Props {
+  lang?: 'it' | 'en';
   gallery: CldFolder;
 }
-const { gallery } = Astro.props;
+const { gallery, lang = 'it' } = Astro.props;
 ---
 
 <a
@@ -30,7 +31,7 @@ const { gallery } = Astro.props;
   <div class="absolute bottom-0 left-0 right-0 p-5">
     <h3 class="font-display text-xl font-bold text-white leading-tight mb-2">{gallery.name}</h3>
     <span class="inline-block text-xs font-semibold bg-brand-600 text-white px-3 py-1 rounded-full">
-      Vedi foto →
+      {lang === 'en' ? 'View photos' : 'Vedi foto'} →
     </span>
   </div>
 </a>

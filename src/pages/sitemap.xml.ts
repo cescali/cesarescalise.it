@@ -23,6 +23,7 @@ export const GET: APIRoute = async () => {
   try {
     const urls = new Set<string>([
       '/',
+      '/en/',
       '/blog/',
       '/gallerie/',
       '/libri/',

@@ -35,4 +35,12 @@
 
 /* Il comando mobile resta nascosto quando la navigazione è completa. */
 @media (min-width: 640px) { #menu-toggle:not(.home-menu-toggle) { display: none; } }
-@media (min-width: 1024px) { #menu-toggle.home-menu-toggle { display: none; } }
+@media (min-width: 1280px) { #menu-toggle.home-menu-toggle { display: none; } }
+
+.language-switcher { display: flex; align-items: center; gap: .25rem; flex-shrink: 0; margin-left: 1rem; }
+.language-switcher a { padding: .4rem .45rem; font-size: .72rem; font-weight: 600; color: rgb(var(--tone-secondary)); border-bottom: 2px solid transparent; }
+.language-switcher a[aria-current="page"] { color: #d7b66c; border-bottom-color: #d7b66c; }
+.language-switcher a:hover { color: #ebcc87; }
+@media (max-width: 1023px) { .language-switcher { margin-left: auto; margin-right: 1rem; } }
+
+@media (max-width: 1279px) { .author-header .language-switcher { margin-left: auto; margin-right: 1rem; } }

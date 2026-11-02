@@ -1,7 +1,7 @@
 .author-home { --ink: rgb(var(--tone-page)); --surface: rgb(var(--tone-surface)); --line: rgb(var(--tone-line)); --muted: rgb(var(--tone-secondary)); --accent: rgb(var(--tone-accent)); color: rgb(var(--tone-text)); background: var(--ink); }
 .author-header { background: rgb(var(--tone-page) / .96); backdrop-filter: blur(16px); }
 .author-header nav { max-width: 1280px; }
-.author-header nav > a { font-size: 1.35rem; }
+.author-header > nav > a { font-size: 1.35rem; }
 .author-home .eyebrow { color: var(--accent); text-transform: uppercase; font-size: .7rem; font-weight: 600; letter-spacing: .2em; margin-bottom: 1.4rem; }
 .author-home h1, .author-home h2, .author-home h3 { font-family: 'Playfair Display', Georgia, serif; }
 .author-home h2 { font-size: clamp(2.25rem,4.5vw,3.6rem); line-height: 1.12; letter-spacing: -.035em; }
@@ -160,3 +160,18 @@
   .reader-mockup { padding: 9px 7px 20px; border-radius: 12px; }
   .hero-book > span { padding-top: 1.2rem; }
 }
+.introduction-note { max-width: 330px; margin-top: 1.8rem; padding-left: 1rem; border-left: 2px solid #d7b66c; color: rgb(var(--tone-secondary)); font-size: .9rem; line-height: 1.8; }
+.introduction-copy > .text-link { display: inline-flex; margin-top: .6rem; }
+
+.project-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1.75rem; }
+.project-card { display: flex; flex-direction: column; min-width: 0; border: 1px solid rgb(var(--tone-line)); border-radius: 12px; overflow: hidden; background: #111214; }
+.project-preview { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid rgb(var(--tone-line)); background: #17191c; }
+.project-preview img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .3s ease; }
+.project-preview:hover img { transform: scale(1.025); }
+.project-copy { padding: 1.75rem; display: flex; flex-direction: column; align-items: flex-start; flex: 1; }
+.author-home .project-copy h3 { color: #e2c38a; font-size: 1.8rem; margin: .7rem 0 1rem; }
+.project-copy > p:not(.project-status) { color: #c3c7ce; font-size: .9rem; line-height: 1.8; margin-bottom: 1.5rem; }
+.project-copy .action { margin-top: auto; }
+.project-status { color: #bdd6c3; font-size: .65rem; text-transform: uppercase; letter-spacing: .12em; }
+.project-status--development { color: #d7b66c; }
+@media (max-width: 639px) { .project-grid { grid-template-columns: 1fr; } .project-copy { padding: 1.4rem; } }

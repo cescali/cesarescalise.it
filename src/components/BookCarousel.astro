@@ -13,22 +13,23 @@ interface Edition {
   discover: string;
   buy: string;
 }
-interface Props { editions: Edition[]; }
-const { editions } = Astro.props;
+interface Props { editions: Edition[]; lang?: 'it' | 'en'; }
+const { editions, lang = 'it' } = Astro.props;
+const en = lang === 'en';
 ---
-<section class="novel-carousel" aria-roledescription="carosello" aria-label="Progetto Nemesis: edizioni italiana e inglese" data-novel-carousel>
+<section class="novel-carousel" aria-roledescription={en ? 'carousel' : 'carosello'} aria-label={en ? 'Nemesis: English and Italian editions' : 'Progetto Nemesis: edizioni italiana e inglese'} data-novel-carousel data-ui-lang={lang}>
   {editions.map((edition, index) => (
     <img class:list={["hero-backdrop", { "is-active": index === 0 }]} data-backdrop src={edition.backdrop} alt="" aria-hidden="true" loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} />
   ))}
   <div class="hero-shade" aria-hidden="true"></div>
   <div class="hero-inner">
-    <p class="hero-byline">Cesare Scalise <span aria-hidden="true">/</span> Storie, tecnologia e altri mondi</p>
+    <p class="hero-byline">Cesare Scalise <span aria-hidden="true">/</span> {en ? 'Stories, technology and other worlds' : 'Storie, tecnologia e altri mondi'}</p>
     <div class="slides">
       {editions.map((edition, index) => (
-        <article id={`slide-${edition.id}`} class="novel-slide" lang={edition.language} hidden={index !== 0} inert={index !== 0} aria-hidden={index !== 0} data-slide aria-label={`${index + 1} di ${editions.length}: ${edition.title}`} aria-roledescription="diapositiva">
+        <article id={`slide-${edition.id}`} class="novel-slide" lang={edition.language} hidden={index !== 0} inert={index !== 0} aria-hidden={index !== 0} data-slide aria-label={`${index + 1} ${en ? 'of' : 'di'} ${editions.length}: ${edition.title}`} aria-roledescription={en ? 'slide' : 'diapositiva'}>
           <div class="hero-copy">
-            <p class="eyebrow">{index === 0 ? 'Il romanzo · Edizione italiana' : 'The novel · English edition'}</p>
-            {index === 0 ? <h1>Il nemico è già <em>a bordo.</em></h1> : <h2>The enemy is <em>already on board.</em></h2>}
+            <p class="eyebrow">{edition.language === 'it' ? 'Il romanzo · Edizione italiana' : 'The novel · English edition'}</p>
+            {index === 0 ? <h1>{edition.language === 'it' ? <>Il nemico è già <em>a bordo.</em></> : <>The enemy is <em>already on board.</em></>}</h1> : <h2>{edition.language === 'it' ? <>Il nemico è già <em>a bordo.</em></> : <>The enemy is <em>already on board.</em></>}</h2>}
             <p class="hero-title">{edition.title}</p>
             <p class="hero-description">{edition.description}</p>
             <div class="hero-actions">
@@ -37,31 +38,31 @@ const { editions } = Astro.props;
             </div>
             <p class="hero-genre">Spy <span>·</span> Action <span>·</span> Techno-thriller</p>
           </div>
-          <a class="hero-book" href={edition.page} aria-label={index === 0 ? 'Scopri Progetto Nemesis, edizione italiana' : 'Discover Project Nemesis, English edition'}>
+          <a class="hero-book" href={edition.page} aria-label={edition.language === 'it' ? 'Scopri Progetto Nemesis, edizione italiana' : 'Discover Project Nemesis, English edition'}>
             <div class="book-halo" aria-hidden="true"></div>
             <div class="book-format-scene">
               <div class="paperback-mockup">
-                <img src={edition.cover} alt={`Copertina di ${edition.title} di Cesare Scalise`} width="663" height="1024" loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} />
+                <img src={edition.cover} alt={edition.language === 'it' ? `Copertina di ${edition.title} di Cesare Scalise` : `${edition.title} by Cesare Scalise — book cover`} width="663" height="1024" loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} />
               </div>
               <div class="reader-mockup" aria-hidden="true">
                 <div class="reader-screen"><img src={edition.cover} alt="" width="663" height="1024" loading={index === 0 ? 'eager' : 'lazy'} /></div>
                 <div class="reader-home"></div>
               </div>
             </div>
-            <span>{index === 0 ? 'La tua prossima missione comincia qui.' : 'Your next mission starts here.'}</span>
+            <span>{edition.language === 'it' ? 'La tua prossima missione comincia qui.' : 'Your next mission starts here.'}</span>
           </a>
         </article>
       ))}
     </div>
     <div class="carousel-bar">
-      <a class="scroll-invitation" href="#chi-sono">Esplora il mio mondo <span aria-hidden="true">↓</span></a>
+      <a class="scroll-invitation" href="#chi-sono">{en ? 'Explore my world' : 'Esplora il mio mondo'} <span aria-hidden="true">↓</span></a>
       <div class="carousel-controls">
-        <button class="site-button site-button--outline" type="button" data-previous aria-label="Edizione precedente">←</button>
-        <div class="edition-selectors" aria-label="Scegli l’edizione">
-          {editions.map((edition, index) => <button class="site-button site-button--outline" type="button" data-select={index} aria-controls={`slide-${edition.id}`} aria-label={`Mostra ${edition.title}, ${edition.language === 'it' ? 'edizione italiana' : 'English edition'}`} aria-pressed={index === 0}>{edition.language === 'it' ? '01 / IT' : '02 / EN'}</button>)}
+        <button class="site-button site-button--outline" type="button" data-previous aria-label={en ? 'Previous edition' : 'Edizione precedente'}>←</button>
+        <div class="edition-selectors" aria-label={en ? 'Choose an edition' : 'Scegli l’edizione'}>
+          {editions.map((edition, index) => <button class="site-button site-button--outline" type="button" data-select={index} aria-controls={`slide-${edition.id}`} aria-label={`${en ? 'Show' : 'Mostra'} ${edition.title}, ${edition.language === 'it' ? (en ? 'Italian edition' : 'edizione italiana') : 'English edition'}`} aria-pressed={index === 0}>{`${String(index + 1).padStart(2, '0')} / ${edition.language.toUpperCase()}`}</button>)}
         </div>
-        <button class="site-button site-button--outline" type="button" data-next aria-label="Edizione successiva">→</button>
-        <button class="site-button site-button--outline" type="button" data-pause aria-label="Metti in pausa il carosello" aria-pressed="false">Pausa</button>
+        <button class="site-button site-button--outline" type="button" data-next aria-label={en ? 'Next edition' : 'Edizione successiva'}>→</button>
+        <button class="site-button site-button--outline" type="button" data-pause aria-label={en ? 'Pause slideshow' : 'Metti in pausa il carosello'} aria-pressed="false">{en ? 'Pause' : 'Pausa'}</button>
       </div>
     </div>
     <p class="sr-only" aria-live="polite" data-carousel-status></p>
@@ -102,12 +103,13 @@ const { editions } = Astro.props;
       }
     }).observe(carousel);
     document.fonts.ready.then(alignTextRows);
+    const en = carousel.dataset.uiLang === 'en';
     let current = 0;
     let paused = reducedMotion.matches;
     function updatePause() {
       pauseButton?.setAttribute('aria-pressed', String(paused));
-      pauseButton?.setAttribute('aria-label', paused ? 'Avvia il carosello' : 'Metti in pausa il carosello');
-      if (pauseButton) pauseButton.textContent = paused ? 'Riprendi' : 'Pausa';
+      pauseButton?.setAttribute('aria-label', paused ? (en ? 'Play slideshow' : 'Avvia il carosello') : (en ? 'Pause slideshow' : 'Metti in pausa il carosello'));
+      if (pauseButton) pauseButton.textContent = paused ? (en ? 'Resume' : 'Riprendi') : (en ? 'Pause' : 'Pausa');
     }
     function showSlide(index: number, manual = false) {
       current = (index + slides.length) % slides.length;

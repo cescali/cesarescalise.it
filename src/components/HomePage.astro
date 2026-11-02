@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookCarousel from './BookCarousel.astro';
+import ArrowIcon from './ArrowIcon.astro';
+import PostCard from './PostCard.astro';
+import GalleryCard from './GalleryCard.astro';
+import { getPosts, getPage, getFeaturedImage } from '../lib/wordpress';
+import { getFolders } from '../lib/cloudinary';
+import '../styles/home.css';
+
+interface Props { lang?: 'it' | 'en'; }
+const { lang = 'it' } = Astro.props;
+const en = lang === 'en';
+const tr = (it: string, english: string) => en ? english : it;
+
+// Le fonti sono indipendenti: un servizio non disponibile non nasconde gli altri contenuti.
+const [postResult, galleryResult, bookResult] = await Promise.allSettled([
+  getPosts(3), getFolders(), getPage('libri'),
+]);
+const posts = postResult.status === 'fulfilled' ? postResult.value : [];
+const galleries = galleryResult.status === 'fulfilled' ? galleryResult.value.slice(0, 4) : [];
+const bookHtml = bookResult.status === 'fulfilled' ? bookResult.value?.content.rendered ?? '' : '';
+const italianCover = bookHtml.match(/<img\b[^>]*\bsrc="([^"]+)"/)?.[1]
+  ?? 'https://www.cesarescalise.it/wordpress/wp-content/uploads/2026/10/Progetto_Nemesis_Kindle_Cover-663x1024.jpg';
+const backdropPost = posts.find(post => post.slug.includes('una-nave-puo'));
+const backdrop = backdropPost ? getFeaturedImage(backdropPost) ?? '/images/books/project-nemesis.webp' : '/images/books/project-nemesis.webp';
+const englishBackdropPost = posts.find(post => post.slug.includes('cole-vance'));
+const englishBackdrop = englishBackdropPost ? getFeaturedImage(englishBackdropPost) ?? '/images/books/project-nemesis.webp' : '/images/books/project-nemesis.webp';
+const editions = [
+  { id: 'it', language: 'it', title: 'Progetto Nemesis', headline: 'Il nemico è già a bordo.', cover: italianCover, backdrop,
+    description: 'Una minaccia invisibile. Le rotte del mondo. Una corsa contro il tempo tra spionaggio, sabotaggi navali e operazioni clandestine.',
+    page: '/libri/', amazon: 'https://www.amazon.it/dp/B0HLXTBMK1', discover: 'Scopri il romanzo', buy: 'Acquista su Amazon' },
+  { id: 'en', language: 'en', title: 'Project Nemesis', headline: 'The enemy is already on board.', cover: '/images/books/project-nemesis.webp', backdrop: englishBackdrop,
+    description: 'An invisible threat. The world’s shipping routes. A race against time through espionage, naval sabotage, and covert operations.',
+    page: '/libri/project-nemesis/', amazon: 'https://www.amazon.com/dp/B0HNSMMM7J', discover: 'Discover the novel', buy: 'Buy on Amazon' },
+];
+const socials = [
+  { name: 'Instagram', icon: 'instagram', url: 'https://www.instagram.com/cesarescalise.it/' },
+  { name: 'Facebook', icon: 'facebook', url: 'https://www.facebook.com/cesare.scalise?locale=it_IT' },
+  { name: 'Threads', icon: 'threads', url: 'https://www.threads.com/@cesarescalise.it' },
+  { name: 'X', icon: 'x', url: 'https://x.com/cescali' },
+  { name: 'LinkedIn', icon: 'linkedin', url: 'https://www.linkedin.com/in/cesare-scalise-0283858/' },
+];
+const personSchema = {
+  '@context': 'https://schema.org', '@type': 'Person', '@id': 'https://www.cesarescalise.it/#person',
+  name: 'Cesare Scalise', url: 'https://www.cesarescalise.it/',
+  description: tr('Autore italiano del techno-thriller Progetto Nemesis, sviluppatore software e appassionato di fotografia.', 'Italian author of the techno-thriller Project Nemesis, software developer and photography enthusiast.'),
+  sameAs: socials.map(s => s.url), knowsAbout: ['Scrittura thriller', 'Techno-thriller', 'Sviluppo software', 'Fotografia'],
+};
+---
+<BaseLayout home lang={lang} languageAlternates={[{ lang: 'it', path: '/' }, { lang: 'en', path: '/en/' }]} title={tr('Sito ufficiale | Autore di Progetto Nemesis', 'Official website | Author of Project Nemesis')} description={tr('Il sito ufficiale di Cesare Scalise, autore di Progetto Nemesis. Romanzi techno-thriller, tecnologia, articoli e fotografie di viaggio.', 'The official website of Cesare Scalise, author of Project Nemesis. Techno-thrillers, technology, articles and travel photography.')} image={italianCover}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+  <div class="author-home">
+    <BookCarousel editions={en ? [...editions].reverse() : editions} lang={lang} />
+
+    <section id="chi-sono" class="home-section introduction">
+      <div>
+        <p class="eyebrow">{tr("01 / Chi sono", "01 / About me")}</p>
+        <h2><Fragment set:html={tr("La curiosità è il<br /><em>filo che unisce.</em>", "Curiosity is<br /><em>the common thread.</em>")} /></h2>
+        <p class="introduction-note">{tr("Informatica, scrittura e fotografia: tre passioni che si incontrano in questo spazio.", "Technology, writing and photography: three passions that come together here.")}</p>
+      </div>
+      <div class="introduction-copy">
+        <p class="intro-lead">{tr("Sono Cesare Scalise, sviluppatore software e autore di romanzi techno spy thriller.", "I’m Cesare Scalise, a software developer and techno spy thriller author.")}</p>
+        <p><Fragment set:html={tr("L’informatica è il mio lavoro da oltre venticinque anni. La passione per la lettura mi ha accompagnato lungo questo percorso, fino al desiderio di scrivere una storia mia. Così è nato <em>Progetto Nemesis</em>, il mio primo romanzo, disponibile anche in inglese come <em>Project Nemesis</em>.", "I have worked in software development for over twenty-five years. A love of reading has stayed with me throughout that journey, eventually inspiring me to write a story of my own. That became <em>Progetto Nemesis</em>, my first novel, also available in English as <em>Project Nemesis</em>.")} /></p>
+        <p>{tr("Nella scrittura porto con me l’esperienza del mondo tecnologico. Mi interessa esplorare ciò che accade quando sistemi da cui dipendiamo ogni giorno diventano una minaccia: è il terreno in cui si incontrano tecnologia, spionaggio e azione. La sfida è trasformare i dettagli tecnici in una storia capace di coinvolgere anche chi non lavora nell’informatica.", "My experience in technology shapes my fiction. I’m interested in what happens when the systems we rely on every day become a threat: the point where technology, espionage and action meet. The challenge is to turn technical details into a story that draws in readers who have never worked in IT.")}</p>
+        <p>{tr("Fuori dal lavoro e dalle pagine dei libri, ci sono i viaggi e la fotografia. Nelle gallerie raccolgo luoghi, momenti e dettagli delle mie avventure; nel blog condivido riflessioni sulla tecnologia e il percorso della mia scrittura.", "Beyond work and books, there is travel and photography. My galleries collect places, moments and details from my travels, while the blog follows my writing journey and my thoughts on technology.")}</p>
+        <p>{tr("Questo sito è il punto d’incontro tra queste parti della mia vita. Puoi esplorare il romanzo, leggere gli articoli o partire dalle immagini: scegli tu da dove cominciare.", "This website brings those parts of my life together. Explore the novel, browse the articles or start with the photographs: the choice is yours.")}</p>
+        <a class="text-link" href="#libri">{tr("Entra nel mondo di Nemesis", "Enter the world of Nemesis")} <ArrowIcon /></a>
+      </div>
+    </section>
+    <section id="libri" class="home-section">
+      <div class="section-heading"><div><p class="eyebrow">{tr("02 / Libri", "02 / Books")}</p><h2><Fragment set:html={tr("Una storia.<br /><em>Due lingue.</em>", "One story.<br /><em>Two languages.</em>")} /></h2></div><p><Fragment set:html={tr("Spionaggio, tecnologia e azione.<br />Entra nel mondo di Nemesis.", "Espionage, technology and action.<br />Enter the world of Nemesis.")} /></p></div>
+      <div class="edition-grid">
+        {editions.map(edition => (
+          <article class="edition-card">
+            <a class="edition-cover" href={edition.page}><img src={edition.cover} alt={tr(`Copertina di ${edition.title}`, `${edition.title} book cover`)} width="663" height="1024" loading="lazy" /></a>
+            <div><p class="eyebrow">{edition.language === 'it' ? tr('Edizione italiana', 'Italian edition') : tr('Edizione inglese', 'English edition')}</p><h3>{edition.title}</h3><p class="edition-tagline" lang={edition.language}>{edition.headline}</p><p>Spy · Action · Techno-thriller</p><a class="text-link" href={edition.page}>{edition.language === 'it' ? tr('Sinossi e dettagli', 'Synopsis (Italian)') : tr('Sinossi in inglese', 'Read the synopsis')} <ArrowIcon /></a><a class="edition-amazon" href={edition.amazon} target="_blank" rel="noopener noreferrer">{en ? (edition.language === 'it' ? 'Buy on Amazon.it (Italian edition)' : 'Buy on Amazon.com') : edition.buy} <ArrowIcon /></a></div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="blog" class="home-section">
+      <div class="section-heading"><div><p class="eyebrow">{tr("03 / Dal blog", "03 / From the blog")}</p><h2><Fragment set:html={tr("Tra le righe,<br /><em>oltre il codice.</em>", "Between the lines,<br /><em>beyond the code.</em>")} /></h2></div><a class="text-link" href="/blog/">{tr('Tutti gli articoli', 'All articles (Italian)')} <ArrowIcon /></a></div>
+      {en && <p class="section-description">These articles are currently available in Italian.</p>}
+      {posts.length > 0 ? <div class="home-posts">{posts.map(post => <PostCard post={post} lang={lang} />)}</div> : <p class="section-description">{tr('Gli articoli non sono disponibili in questo momento.', 'Articles are currently unavailable.')} <a class="text-link" href="/blog/">{tr("Vai al blog", "Visit the blog (Italian)")} <ArrowIcon /></a></p>}
+    </section>
+
+    <section id="fotografia" class="home-section">
+      <div class="section-heading"><div><p class="eyebrow">{tr("04 / Fotografia", "04 / Photography")}</p><h2><Fragment set:html={tr("Il mondo,<br /><em>nel mio obiettivo.</em>", "The world,<br /><em>through my lens.</em>")} /></h2></div><a class="text-link" href="/gallerie/">{tr("Tutte le gallerie", "All galleries (Italian)")} <ArrowIcon /></a></div>
+      <p class="section-description">{tr("Luoghi, viaggi e dettagli che meritano di essere ricordati. Un altro modo di raccontare storie.", "Places, journeys and details worth remembering. Another way to tell stories.")}</p>
+      {galleries.length > 0 ? <div class="home-galleries">{galleries.map(gallery => <GalleryCard gallery={gallery} lang={lang} />)}</div> : <a class="photo-invitation" href="/gallerie/"><span>{tr("Appunti di viaggio, in immagini.", "Travel notes, in pictures.")}</span><span class="text-link">{tr("Esplora le gallerie", "Explore the galleries (Italian)")} <ArrowIcon /></span></a>}
+    </section>
+
+    <section id="profilo" class="home-section professional-section">
+      <div><p class="eyebrow">{tr("05 / Profilo professionale", "05 / Professional profile")}</p><h2><Fragment set:html={tr("La tecnologia,<br /><em>ogni giorno.</em>", "Technology,<br /><em>every day.</em>")} /></h2></div>
+      <div class="introduction-copy"><p class="intro-lead">Senior Software Developer &amp; Team Leader.</p><p>{tr("Oltre 25 anni di esperienza nello sviluppo software. Applicazioni enterprise, coordinamento di team e una curiosità costante per gli strumenti e le possibilità dell’intelligenza artificiale.", "Over 25 years of experience in software development. Enterprise applications, team leadership and an ongoing curiosity about the tools and possibilities of artificial intelligence.")}</p><a class="action action-secondary site-button site-button--outline" href="/cv/">{tr("Leggi il curriculum", "Read my CV (Italian)")} <ArrowIcon /></a></div>
+    </section>
+
+    <section id="progetti" class="home-section projects-section">
+      <div class="section-heading"><div><p class="eyebrow">{tr('06 / Progetti personali', '06 / Personal projects')}</p><h2><Fragment set:html={tr('Idee che diventano<br /><em>progetti.</em>', 'Ideas that become<br /><em>projects.</em>')} /></h2></div></div>
+      <p class="section-description">{tr('La passione per l’informatica continua anche fuori dal lavoro: uno spazio per sperimentare e trasformare le idee in qualcosa da usare.', 'My passion for technology extends beyond work: a space to experiment and turn ideas into something people can use.')}</p>
+      <div class="project-grid">
+        <article class="project-card">
+          <a class="project-preview" href="https://meteo-piemonte.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label={tr('Visita Meteo Piemonte (nuova scheda)', 'Visit Meteo Piemonte (new tab)')}><img src="/images/projects/meteo-piemonte.png" width="1280" height="720" alt={tr('Anteprima di Meteo Piemonte con mappa e previsioni delle province', 'Meteo Piemonte preview with a map and provincial forecasts')} loading="lazy" /></a>
+          <div class="project-copy"><p class="project-status">{tr('Online · App meteo', 'Live · Weather app')}</p><h3>Meteo Piemonte</h3><p>{tr('Un’app dedicata al meteo del Piemonte, con ricerca dei comuni, mappa interattiva e previsioni delle province. Un progetto personale in cui la tecnologia incontra il territorio.', 'A weather app for Piedmont, with town search, an interactive map and provincial forecasts. A personal project connecting technology with the local area.')}</p><a class="site-button site-button--outline action" href="https://meteo-piemonte.vercel.app/" target="_blank" rel="noopener noreferrer">{tr('Esplora Meteo Piemonte', 'Explore Meteo Piemonte')} <ArrowIcon /></a></div>
+        </article>
+        <article class="project-card">
+          <a class="project-preview" href="https://candywolf.store/" target="_blank" rel="noopener noreferrer" aria-label={tr('Visita CandyWolf (nuova scheda)', 'Visit CandyWolf (new tab)')}><img src="/images/projects/candywolf.png" width="1265" height="712" alt={tr('Anteprima della pagina Coming soon di CandyWolf', 'Preview of the CandyWolf coming soon page')} loading="lazy" /></a>
+          <div class="project-copy"><p class="project-status project-status--development">{tr('In sviluppo · Coming soon', 'In development · Coming soon')}</p><h3>CandyWolf</h3><p>{tr('Un progetto in evoluzione, con l’idea di diventare uno store specializzato in accessori per animali, a partire dai cani. Per ora è online la pagina di presentazione: il negozio non è ancora aperto.', 'An evolving project with the aim of becoming a specialist pet accessories store, starting with dogs. The coming soon page is live; the shop has not opened yet.')}</p><a class="site-button site-button--outline action" href="https://candywolf.store/" target="_blank" rel="noopener noreferrer">{tr('Scopri il progetto CandyWolf', 'Discover the CandyWolf project')} <ArrowIcon /></a></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contatti" class="home-section contact-section">
+      <p class="eyebrow">{tr("07 / Restiamo in contatto", "07 / Keep in touch")}</p><h2><Fragment set:html={tr("Le storie continuano.<br /><em>Anche fuori da qui.</em>", "The stories continue.<br /><em>Beyond this website.</em>")} /></h2><p>{tr("Libri, tecnologia, fotografie e nuovi progetti: seguimi sui social.", "Books, technology, photographs and new projects: follow me on social media.")}</p>
+      <div class="social-links">{socials.map(s => (
+        <a class="site-button site-button--outline" href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name}>
+          <img src={`https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/${s.icon}.svg`} alt="" width="20" height="20" loading="lazy" />
+        </a>
+      ))}</div>
+    </section>
+  </div>
+</BaseLayout>
