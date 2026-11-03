@@ -5,6 +5,7 @@ import '../styles/buttons.css';
 import Analytics from '@vercel/analytics/astro';
 import PalettePreview from '../components/PalettePreview.astro';
 import ArrowIcon from '../components/ArrowIcon.astro';
+import ApplicationsMenu from '../components/ApplicationsMenu.astro';
 
 interface Props {
   title: string;
@@ -19,21 +20,25 @@ const { title, description = 'Il sito personale di Cesare Scalise — blog, gall
 const isEnglish = lang === 'en';
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const navLinks: { href: string; label: string; external?: boolean }[] = home ? [
+const navLinks: { href: string; label: string; external?: boolean; applications?: boolean }[] = home ? [
   { href: '#chi-sono', label: 'Chi sono' },
   { href: '#libri', label: 'Libri' },
   { href: '#blog', label: 'Blog' },
   { href: '#fotografia', label: 'Fotografia' },
   { href: '#profilo', label: 'Profilo' },
   { href: '#progetti', label: 'Progetti' },
-  { href: 'https://meteo-piemonte.vercel.app', label: 'Meteo Piemonte', external: true },
+  { href: '#applicazioni', label: isEnglish ? 'Applications' : 'Applicazioni', applications: true },
   { href: '#contatti', label: 'Contatti' },
 ] : [
   { href: '/blog',     label: 'Blog' },
   { href: '/gallerie', label: isEnglish ? 'Galleries' : 'Gallerie' },
   { href: '/libri',    label: isEnglish ? 'Books' : 'Libri' },
   { href: '/cv',       label: 'CV' },
-  { href: 'https://meteo-piemonte.vercel.app', label: isEnglish ? 'Piedmont Weather' : 'Meteo Piemonte', external: true },
+  { href: '#applicazioni', label: isEnglish ? 'Applications' : 'Applicazioni', applications: true },
+];
+const applications = [
+  { href: 'https://vaitorino.vercel.app/', label: 'VaiTorino' },
+  { href: 'https://meteo-piemonte.vercel.app/', label: 'Meteo Piemonte' },
 ];
 const currentPath = Astro.url.pathname;
 const homePath = isEnglish ? '/en/' : '/';
@@ -107,6 +112,7 @@ if (isEnglish && !home) navLinks.forEach(link => {
         <ul class:list={[home ? "hidden xl:flex" : "hidden sm:flex", "gap-5 text-sm font-medium"]}>
           {navLinks.map(link => (
             <li>
+              {link.applications ? <ApplicationsMenu label={link.label} applications={applications} isEnglish={isEnglish} /> : (
               <a
                 href={link.href}
                 target={link.external ? '_blank' : undefined}
@@ -119,6 +125,7 @@ if (isEnglish && !home) navLinks.forEach(link => {
               >
                 {link.label}{link.external && <> <ArrowIcon /></>}
               </a>
+              )}
             </li>
           ))}
         </ul>
@@ -150,6 +157,7 @@ if (isEnglish && !home) navLinks.forEach(link => {
       <ul id="mobile-menu" class:list={["hidden flex-col px-5 pb-4 text-sm font-medium border-t border-gray-200", home ? "xl:hidden" : "sm:hidden"]}>
         {navLinks.map(link => (
           <li>
+            {link.applications ? <ApplicationsMenu label={link.label} applications={applications} isEnglish={isEnglish} mobile /> : (
             <a
               href={link.href}
               target={link.external ? '_blank' : undefined}
@@ -162,6 +170,7 @@ if (isEnglish && !home) navLinks.forEach(link => {
             >
               {link.label}{link.external && <> <ArrowIcon /></>}
             </a>
+            )}
           </li>
         ))}
       </ul>
@@ -199,7 +208,7 @@ if (isEnglish && !home) navLinks.forEach(link => {
       <div class="max-w-6xl mx-auto px-5 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
         <span class="font-display text-gray-900 font-bold text-lg">Cesare Scalise</span>
         <nav class="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm">
-          {navLinks.map(link => (
+          {navLinks.flatMap(link => link.applications ? applications.map(app => ({ ...app, external: true })) : [link]).map(link => (
             <a
               href={link.href}
               target={link.external ? '_blank' : undefined}
