@@ -209,7 +209,7 @@ if (isEnglish && !home) navLinks.forEach(link => {
       <div class="max-w-6xl mx-auto px-5 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
         <span class="font-display text-gray-900 font-bold text-lg">Cesare Scalise</span>
         <nav class="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm">
-          {navLinks.flatMap(link => link.applications ? applications.map(app => ({ ...app, external: true })) : [link]).map(link => (
+          {navLinks.filter(link => !link.applications).map(link => (
             <a
               href={link.href}
               target={link.external ? '_blank' : undefined}
