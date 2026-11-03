@@ -175,3 +175,5 @@
 .project-status { color: #bdd6c3; font-size: .65rem; text-transform: uppercase; letter-spacing: .12em; }
 .project-status--development { color: #d7b66c; }
 @media (max-width: 639px) { .project-grid { grid-template-columns: 1fr; } .project-copy { padding: 1.4rem; } }
+
+@media (min-width: 1100px) { .project-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.3rem; } .project-copy { padding: 1.4rem; } }
